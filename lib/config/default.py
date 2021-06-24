@@ -35,7 +35,7 @@ _C.CUDNN.ENABLED = True
 
 # common params for NETWORK
 _C.MODEL = CN()
-_C.MODEL.NAME = 'pose_hrnet'
+_C.MODEL.NAME = 'pose_resnet'
 _C.MODEL.INIT_WEIGHTS = True
 _C.MODEL.PRETRAINED = ''
 _C.MODEL.NUM_JOINTS = 17
@@ -45,6 +45,18 @@ _C.MODEL.IMAGE_SIZE = [256, 256]  # width * height, ex: 192 * 256
 _C.MODEL.HEATMAP_SIZE = [64, 64]  # width * height, ex: 24 * 32
 _C.MODEL.SIGMA = 2
 _C.MODEL.EXTRA = CN(new_allowed=True)
+
+# pose_resnet related params
+
+_C.MODEL.EXTRA.NUM_LAYERS = 50
+_C.MODEL.EXTRA.DECONV_WITH_BIAS = False
+_C.MODEL.EXTRA.NUM_DECONV_LAYERS = 3
+_C.MODEL.EXTRA.NUM_DECONV_FILTERS = [256, 256, 256]
+_C.MODEL.EXTRA.NUM_DECONV_KERNELS = [4, 4, 4]
+_C.MODEL.EXTRA.FINAL_CONV_KERNEL = 1
+_C.MODEL.EXTRA.PRETRAINED_LAYERS = ['*']
+
+
 
 _C.LOSS = CN()
 _C.LOSS.USE_OHKM = False
@@ -158,4 +170,3 @@ if __name__ == '__main__':
     import sys
     with open(sys.argv[1], 'w') as f:
         print(_C, file=f)
-
