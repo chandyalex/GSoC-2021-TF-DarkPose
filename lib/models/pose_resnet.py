@@ -223,26 +223,34 @@ class PoseResNet(tensorflow.keras.Model):
     def init_weights(self, pretrained=''):
         if os.path.isfile(pretrained):
             logger.info('=> init deconv weights from normal distribution')
-            for name, m in self.deconv_layers.named_modules():
-                if isinstance(m, nn.ConvTranspose2d):
+            for name, m in self.deconv_layers.layers:
+                if isinstance(m, Conv2DTranspose):
                     logger.info('=> init {}.weight as normal(0, 0.001)'.format(name))
                     logger.info('=> init {}.bias as 0'.format(name))
-                    nn.init.normal_(m.weight, std=0.001)
+                    initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
+                    m.kernel_initializer=initializer
+
                     if self.deconv_with_bias:
-                        nn.init.constant_(m.bias, 0)
-                elif isinstance(m, nn.BatchNorm2d):
+                        bias_initializer=initializers.Zeros()
+                        m.bias_initializer=bias_initializer
+                elif isinstance(m, BatchNormalization):
                     logger.info('=> init {}.weight as 1'.format(name))
                     logger.info('=> init {}.bias as 0'.format(name))
-                    nn.init.constant_(m.weight, 1)
-                    nn.init.constant_(m.bias, 0)
+                    initializer=initializers.Constant(value=1)
+                    m.kernel_initializer=initializer
+                    bias_initializer=nitializers.Constant(value=0)
+                    m.bias_initializer=bias_initializer
             logger.info('=> init final conv weights from normal distribution')
-            for m in self.final_layer.modules():
-                if isinstance(m, nn.Conv2d):
+            for m in self.final_layer.layers:
+                if isinstance(m, Conv2D):
                     # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                     logger.info('=> init {}.weight as normal(0, 0.001)'.format(name))
                     logger.info('=> init {}.bias as 0'.format(name))
-                    nn.init.normal_(m.weight, std=0.001)
-                    nn.init.constant_(m.bias, 0)
+
+                    initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
+                    m.kernel_initializer=initializer
+                    bias_initializer=nitializers.Constant(value=0)
+                    m.bias_initializer=bias_initializer
 
             pretrained_state_dict = torch.load(pretrained)
             logger.info('=> loading pretrained model {}'.format(pretrained))
@@ -252,21 +260,22 @@ class PoseResNet(tensorflow.keras.Model):
 
             for m in self.layers:
                 if isinstance(m, Conv2D):
-                    # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                     initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
-                    m.add_weight(initializer=initializer)
+                    m.kernel_initializer=initializer
+
 
                 elif isinstance(m, BatchNormalization):
                     initializer=initializers.Constant(value=1)
-                    m.add_weight(initializer=initializer)
-                    bias_initializer=initializers.Zeros()
-                    m.add_weight(initializer=bias_initializer)
+                    m.kernel_initializer=initializer
+                    bias_initializer=initializers.Constant(value=0)
+                    m.bias_initializer=bias_initializer
+
                 elif isinstance(m, Conv2DTranspose):
                     initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
-                    m.add_weight(initializer=initializer)
+                    m.kernel_initializer=initializer
                     if self.deconv_with_bias:
-                        bias_initializer=initializers.Zeros()
-                        m.add_weight(initializer=bias_initializer)
+                        initializer=initializers.Constant(value=0)
+                        m.bias_initializer=bias_initializer
 resnet_spec = {
     18: (basic_Block, [2, 2, 2, 2]),
     34: (basic_Block, [3, 4, 6, 3]),
