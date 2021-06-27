@@ -18,9 +18,10 @@ from tensorflow.keras.layers import UpSampling2D, add, concatenate,AveragePoolin
 BN_MOMENTUM = 0.1
 logger = logging.getLogger(__name__)
 
-def conv3x3(input, out_filters, strides=(1, 1)):
+def conv3x3(out_filters, strides=(1, 1)):
 
-    x = Conv2D(filters=out_filters, kernel_size=(3,3), strides=strides, use_bias=False,padding='same')
+    x = Conv2D(filters=out_filters, kernel_size=(3,3), strides=strides,
+        use_bias=False,padding='same')
     return x
 
 
@@ -29,10 +30,10 @@ class basic_Block(tensorflow.keras.Model):
     def __init__(self,inplanes, planes, strides=(1, 1), with_downsample=None):
         super(basic_Block, self).__init__()
 
-        self.conv1 = conv3x3(input=inplanes, out_filters=planes, strides=strides)
+        self.conv1 = conv3x3(out_filters=planes, strides=strides)
         self.bn1 = BatchNormalization(momentum=BN_MOMENTUM)
         self.relu = ReLU()
-        self.conv2 = conv3x3(input=planes, out_filters=planes,strides=strides)
+        self.conv2 = conv3x3(out_filters=planes,strides=strides)
         self.bn2 = BatchNormalization(momentum=BN_MOMENTUM)
         self.downsample = with_downsample
         self.stride = strides
@@ -121,7 +122,8 @@ class PoseResNet(tensorflow.keras.Model):
         self.bn1 = BatchNormalization(momentum=BN_MOMENTUM)
         self.relu = ReLU()
         self.padding2=keras.layers.ZeroPadding2D(padding=(1,1))
-        self.maxpool = MaxPooling2D(pool_size=(3,3), strides=(2,2),padding="same")
+        self.maxpool = MaxPooling2D(pool_size=(3,3),
+                        strides=(2,2),padding="same")
 
 
         self.layer1 = self._make_layer(block, 64, layers[0],stride=1)
@@ -149,7 +151,8 @@ class PoseResNet(tensorflow.keras.Model):
             # downsample=True
             downsample = Sequential([
                 Conv2D(filters = planes * block.expansion,
-                          kernel_size=(1,1), strides=stride,use_bias=False,padding="same"),
+                          kernel_size=(1,1), strides=(stride,stride),
+                          use_bias=False,padding="same"),
                 BatchNormalization(momentum=BN_MOMENTUM)])
 
         layers = []
