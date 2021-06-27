@@ -9,6 +9,7 @@ import math
 import tensorflow.keras.backend as K
 import tensorflow
 from tensorflow import keras
+from tensorflow.keras import initializers
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation
 from tensorflow.keras.layers import MaxPooling2D, Conv2DTranspose, Input,Flatten,ReLU
@@ -16,9 +17,6 @@ from tensorflow.keras.layers import UpSampling2D, add, concatenate,AveragePoolin
 
 BN_MOMENTUM = 0.1
 logger = logging.getLogger(__name__)
-
-
-
 
 def conv3x3(input, out_filters, strides=(1, 1)):
 
@@ -202,10 +200,7 @@ class PoseResNet(tensorflow.keras.Model):
             layers.append(BatchNormalization(momentum=BN_MOMENTUM))
             layers.append(ReLU())
             self.inplanes = planes
-
-
         return Sequential(layers)
-
 
     def call(self, x):
         x= self.padding1(x)
@@ -254,18 +249,24 @@ class PoseResNet(tensorflow.keras.Model):
             self.load_state_dict(pretrained_state_dict, strict=False)
         else:
             logger.info('=> init weights from normal distribution')
-            for m in self.modules():
-                if isinstance(m, nn.Conv2d):
+
+            for m in self.layers:
+                if isinstance(m, Conv2D):
                     # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-                    nn.init.normal_(m.weight, std=0.001)
-                    # nn.init.constant_(m.bias, 0)
-                elif isinstance(m, nn.BatchNorm2d):
-                    nn.init.constant_(m.weight, 1)
-                    nn.init.constant_(m.bias, 0)
-                elif isinstance(m, nn.ConvTranspose2d):
-                    nn.init.normal_(m.weight, std=0.001)
+                    initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
+                    m.add_weight(initializer=initializer)
+
+                elif isinstance(m, BatchNormalization):
+                    initializer=initializers.Constant(value=1)
+                    m.add_weight(initializer=initializer)
+                    bias_initializer=initializers.Zeros()
+                    m.add_weight(initializer=bias_initializer)
+                elif isinstance(m, Conv2DTranspose):
+                    initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
+                    m.add_weight(initializer=initializer)
                     if self.deconv_with_bias:
-                        nn.init.constant_(m.bias, 0)
+                        bias_initializer=initializers.Zeros()
+                        m.add_weight(initializer=bias_initializer)
 resnet_spec = {
     18: (basic_Block, [2, 2, 2, 2]),
     34: (basic_Block, [3, 4, 6, 3]),
