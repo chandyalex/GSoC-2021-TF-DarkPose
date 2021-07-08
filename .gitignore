@@ -12,8 +12,9 @@ Session.vim
 .netrwhist
 *~
 
-### IPythonNotebook template# Temporary data
-
+### IPythonNotebook template
+# Temporary data
+.ipynb_checkpoints
 
 ### Python template
 # Byte-compiled / optimized / DLL files
