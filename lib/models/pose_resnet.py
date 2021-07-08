@@ -51,7 +51,10 @@ class basic_Block(tensorflow.keras.Model):
 
         if self.downsample is not None:
             residual = self.downsample(residual)
-        x = keras.layers.add([x,residual])
+            x = keras.layers.add([x,residual])
+        else:
+            x = keras.layers.add([x,residual])
+
 
         x = self.relu(x)
         return x
@@ -78,7 +81,7 @@ class bottleneck_Block(tensorflow.keras.Model):
         self.planes=planes
 
     def call(self, x):
-        padding=keras.layers.ZeroPadding2D(padding=(1,1))
+
         residual = x
 
         x = self.conv1(x)
@@ -112,7 +115,7 @@ class PoseResNet(tensorflow.keras.Model):
         super(PoseResNet, self).__init__()
 
 
-        self.padding1=keras.layers.ZeroPadding2D(padding=(3,3))
+        # self.padding1=keras.layers.ZeroPadding2D(padding=(3,3))
 
 
         self.conv1 = Conv2D(filters=64, kernel_size=(7,7),
@@ -121,7 +124,7 @@ class PoseResNet(tensorflow.keras.Model):
 
         self.bn1 = BatchNormalization(momentum=BN_MOMENTUM)
         self.relu = ReLU()
-        self.padding2=keras.layers.ZeroPadding2D(padding=(1,1))
+        # self.padding2=keras.layers.ZeroPadding2D(padding=(1,1))
         self.maxpool = MaxPooling2D(pool_size=(3,3),
                         strides=(2,2),padding="same")
 
@@ -139,10 +142,9 @@ class PoseResNet(tensorflow.keras.Model):
         )
 
         self.final_layer = Conv2D(
-            input_shape=(extra.NUM_DECONV_FILTERS[-1],),
             filters=cfg.MODEL.NUM_JOINTS,
             kernel_size=extra.FINAL_CONV_KERNEL,
-            strides=(1,1),padding="same")
+            strides=(1,1),padding="same" if extra.FINAL_CONV_KERNEL == 3 else "valid")
 
     def _make_layer(self, block, planes, blocks, stride=1):
 
@@ -191,12 +193,10 @@ class PoseResNet(tensorflow.keras.Model):
 
             planes = num_filters[i]
 
-            layers.append(keras.layers.ZeroPadding2D(padding=(padding,padding)))
+            # layers.append(keras.layers.ZeroPadding2D(padding=(padding,padding)))
             layers.append(
-                Conv2DTranspose(
-                    input_shape=(self.inplanes,self.inplanes,3),
-                    filters=planes,
-                    kernel_size=kernel,
+                Conv2DTranspose(filters=planes,padding='same',
+                    kernel_size=(kernel,kernel),
                     strides=(2,2),
                     use_bias=self.deconv_with_bias))
 
@@ -206,20 +206,29 @@ class PoseResNet(tensorflow.keras.Model):
         return Sequential(layers)
 
     def call(self, x):
-        x= self.padding1(x)
+        inputs = x
+        inputs=keras.layers.Input(shape=(inputs.shape),dtype='float64')
+        # x= self.padding1(x)
         x = self.conv1(x)
+
         x = self.bn1(x)
         x = self.relu(x)
-        x= self.padding2(x)
+        # x= self.padding2(x)
         x = self.maxpool(x)
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-
         x = self.deconv_layers(x)
-        x = self.padding2(x)
         x = self.final_layer(x)
+
+
+
+
+        x=keras.layers.Input(shape=(x.shape),dtype='float64')
+
+        model = keras.Model(inputs, x, name="resnet")
+
 
         return x
 

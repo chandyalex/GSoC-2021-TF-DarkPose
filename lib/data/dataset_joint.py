@@ -18,7 +18,8 @@ import sys
 import cv2
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.utils import Sequence
+from tensorflow.python.keras.utils.data_utils import Sequence
+# from tensorflow.keras.utils import Sequence
 #
 import sys
 sys.path.append("/home/chandy/gsoc/Darkpose_Tensorflow/lib")
@@ -26,6 +27,8 @@ sys.path.append("/home/chandy/gsoc/Darkpose_Tensorflow/lib")
 from utils.transforms import get_affine_transform
 from utils.transforms import affine_transform
 from utils.transforms import fliplr_joints
+
+from pycocotools.coco import COCO
 
 dataset = tf.data.Dataset
 
@@ -41,6 +44,7 @@ class JointsDataset(Sequence):
         self.image_set = image_set
         self.batch_size = cfg.TRAIN.BATCH_SIZE_PER_GPU
 
+
         self.output_path = cfg.OUTPUT_DIR
         self.data_format = cfg.DATASET.DATA_FORMAT
 
@@ -53,13 +57,23 @@ class JointsDataset(Sequence):
 
         self.target_type = cfg.MODEL.TARGET_TYPE
         self.image_size = np.array(cfg.MODEL.IMAGE_SIZE)
+        # self.input_size = input_size
+        # output heatmap size is 1/4 of input size
+        self.output_size = (self.image_size[0]//4, self.image_size[1]//4)
+
+        self.n_channels=3
         self.heatmap_size = np.array(cfg.MODEL.HEATMAP_SIZE)
         self.sigma = cfg.MODEL.SIGMA
         self.use_different_joints_weight = cfg.LOSS.USE_DIFFERENT_JOINTS_WEIGHT
         self.joints_weight = 1
+        self.shuffle=True
+
 
         self.transform = transform
         self.db = []
+        self.coco = copy.deepcopy(COCO(self._get_ann_file_keypoint()))
+        self.image_set_index = copy.deepcopy(self._load_image_set_index())
+        self.on_epoch_end()
 
     def _get_db(self):
         raise NotImplementedError
@@ -112,14 +126,77 @@ class JointsDataset(Sequence):
 
         return center, scale
 
+    def on_epoch_end(self):
+        'Updates indexes after each epoch'
+        self.indexes = np.arange(len(self.image_set_index))
+        if self.shuffle == True:
+            np.random.shuffle(self.image_set_index)
+
     def __len__(self,):
-        return int(len(self.db)/self.batch_size)
+        return int(np.floor(len(self.image_set_index)/self.batch_size))
+
+
 
 
 
     def __getitem__(self, idx):
 
-        db_rec = copy.deepcopy(self.db[idx])
+        # Generate indexes of the batch
+        indexes = self.indexes[idx*self.batch_size:(idx+1)*self.batch_size]
+        # Find list of IDs
+
+        X, target,target_weight, meta = self.data_generation(indexes)
+
+        # final=
+
+        return X, target
+
+
+
+
+    def data_generation(self, list_IDs_temp):
+        # Initialization
+        # X_temp,target_temp,target_weight_temp, meta_temp=self.load_single_batch(0)
+        # X = np.array([])
+        # target = np.array([])
+        # target_weight=np.array([])
+        # meta =np.array([])
+
+        batch_images = np.zeros(shape=(self.batch_size, self.image_size[0], self.image_size[1], 3), dtype=np.float32)
+        batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[0], self.output_size[1], 17), dtype=np.float32)
+        batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float32)
+        batch_metainfo = list()
+        # X = []
+        # target = []
+        # target_weight=[]
+        # meta = []
+        count = 0
+
+        for i in list_IDs_temp:
+
+            X_temp,target_temp,target_weight_temp, meta_temp=self.load_single_batch(i)
+            if X_temp is None:
+                continue
+            index = count % self.batch_size
+            # X_temp=np.vstack([X_temp])
+            # target=np.vstack([target_temp])
+            # target_weight_temp=np.vstack([target_weight_temp])
+            # meta=np.vstack([meta_temp])
+
+            batch_images[index, :, :, :] = X_temp
+            batch_heatmaps[index, :, :, :] = target_temp
+            batch_weights[index, :, :] = target_weight_temp
+            batch_metainfo.append(meta_temp)
+            count = count + 1
+
+        return batch_images, batch_heatmaps, batch_weights,batch_metainfo
+
+
+
+
+    def load_single_batch(self,id):
+
+        db_rec = copy.deepcopy(self.db[id])
 
         image_file = db_rec['image']
         filename = db_rec['filename'] if 'filename' in db_rec else ''
@@ -176,12 +253,18 @@ class JointsDataset(Sequence):
         trans = get_affine_transform(c, s, r, self.image_size)
         trans_heatmap = get_affine_transform(c, s, r, self.heatmap_size)
 
+        # Initialization
+
+
         input = cv2.warpAffine(
             data_numpy,
             trans,
             (int(self.image_size[0]), int(self.image_size[1])),
             flags=cv2.INTER_LINEAR)
-        input= tf.convert_to_tensor(input,dtype=np.float32)
+        # input=tf.cast(input, tf.float32)
+        # input= tf.convert_to_tensor(input,dtype=tf.float32)
+        # input= tf.ragged.constant(input,dtype=np.float32)
+
 
         if self.transform:
             input = self.transform(input)
@@ -193,8 +276,14 @@ class JointsDataset(Sequence):
 
         target, target_weight = self.generate_target(joints_heatmap, joints_vis)
 
-        target = tf.convert_to_tensor(target,dtype=np.float32)
-        target_weight = tf.convert_to_tensor(target_weight,dtype=np.float32)
+
+        # target=tf.cast(target, tf.float32)
+        # target_weight=tf.cast(target_weight, tf.float32)
+        #
+        # target = tf.convert_to_tensor(target,dtype=tf.float32)
+        # target_weight = tf.convert_to_tensor(target_weight,dtype=tf.float32)
+        # target = tf.ragged.constant(target,dtype=np.float32)
+        # target_weight = tf.ragged.constant(target_weight,dtype=np.float32)
 
         meta = {
             'image': image_file,
@@ -208,7 +297,22 @@ class JointsDataset(Sequence):
             'score': score
         }
 
+        target=np.moveaxis(target, 0, 2)
+        # target_weight=np.moveaxis(target_weight, 0, 2)
+
+
+
+
+        # input=np.array(input,dtype=float)
+        # target=np.array(target,dtype=float)
+        # target_weight=np.array(target_weight,dtype=float)
+
+        # tf.convert_to_tensor
+
+
         return input, target, target_weight, meta
+
+
 
     def select_data(self, db):
         db_selected = []
@@ -250,6 +354,7 @@ class JointsDataset(Sequence):
         :param joints_vis: [num_joints, 3]
         :return: target, target_weight(1: visible, 0: invisible)
         '''
+
         target_weight = np.ones((self.num_joints, 1), dtype=np.float32)
         target_weight[:, 0] = joints_vis[:, 0]
 

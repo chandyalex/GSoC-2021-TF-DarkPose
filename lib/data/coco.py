@@ -24,6 +24,7 @@ import numpy as np
 from data.dataset_joint import JointsDataset
 from nms.nms import oks_nms
 from nms.nms import soft_oks_nms
+from tensorflow.python.keras.utils.data_utils import Sequence
 
 
 logger = logging.getLogger(__name__)
@@ -67,6 +68,7 @@ class COCODataset(JointsDataset):
         self.image_height = cfg.MODEL.IMAGE_SIZE[1]
         self.aspect_ratio = self.image_width * 1.0 / self.image_height
         self.pixel_std = 200
+
 
         self.coco = COCO(self._get_ann_file_keypoint())
 
