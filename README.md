@@ -21,9 +21,12 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 - [x]  Data generator
 - [ ]  Hour glass model
 - [x]  Base line model
+- [ ] Loss function
+- [ ] Evaluation matrix
 - [ ]  HR Net
 - [ ]  Dark pose implementation
-- [ ]  Training
+- [x]  Training script base model https://github.com/chandyalex/Darkpose_Tensorflow/blob/main/jupyter/keras_test.ipynb
+- [ ]  Training of base model with darpose
 - [ ]  Training with pre-trained model
 - [ ]  Proper configuration
 - [ ]  Detailed Read me
