@@ -149,7 +149,7 @@ class JointsDataset(Sequence):
 
         # final=
 
-        return X, target
+        return  np.array(X,'float32'),  np.array(target,'float32')
 
 
 
@@ -162,9 +162,9 @@ class JointsDataset(Sequence):
         # target_weight=np.array([])
         # meta =np.array([])
 
-        batch_images = np.zeros(shape=(self.batch_size, self.image_size[0], self.image_size[1], 3), dtype=np.float32)
-        batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[0], self.output_size[1], 17), dtype=np.float32)
-        batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float32)
+        batch_images = np.zeros(shape=(self.batch_size, self.image_size[0], self.image_size[1], 3), dtype=np.float)
+        batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[0], self.output_size[1], 17), dtype=np.float)
+        batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float)
         batch_metainfo = list()
         # X = []
         # target = []
@@ -183,10 +183,19 @@ class JointsDataset(Sequence):
             # target_weight_temp=np.vstack([target_weight_temp])
             # meta=np.vstack([meta_temp])
 
-            batch_images[index, :, :, :] = X_temp
-            batch_heatmaps[index, :, :, :] = target_temp
-            batch_weights[index, :, :] = target_weight_temp
+            batch_images[index, :, :, :] = np.array(X_temp,'float32')
+            batch_heatmaps[index, :, :, :] = np.array(target_temp,'float32')
+            batch_weights[index, :, :] = np.array(target_weight_temp,'float32')
             batch_metainfo.append(meta_temp)
+
+            # batch_images=tf.convert_to_tensor(batch_images,dtype=tf.float32)
+            # batch_heatmaps=tf.convert_to_tensor(batch_heatmaps,dtype=tf.float32)
+            # batch_weights=tf.convert_to_tensor(batch_weights,dtype=tf.float32)
+
+            # batch_images=tf.Variable(batch_images,dtype=tf.float32)
+            # batch_heatmaps=tf.Variable(batch_heatmaps,dtype=tf.float32)
+            # batch_weights=tf.Variable(batch_weights,dtype=tf.float32)
+             # tf.Variable(np.empty((2, 3), dtype=np.float32), collections=[])
             count = count + 1
 
         return batch_images, batch_heatmaps, batch_weights,batch_metainfo
@@ -262,6 +271,7 @@ class JointsDataset(Sequence):
             (int(self.image_size[0]), int(self.image_size[1])),
             flags=cv2.INTER_LINEAR)
         # input=tf.cast(input, tf.float32)
+        input = np.asarray(input, 'float32')
         # input= tf.convert_to_tensor(input,dtype=tf.float32)
         # input= tf.ragged.constant(input,dtype=np.float32)
 
@@ -303,9 +313,11 @@ class JointsDataset(Sequence):
 
 
 
-        # input=np.array(input,dtype=float)
-        # target=np.array(target,dtype=float)
-        # target_weight=np.array(target_weight,dtype=float)
+        # input=np.array(input,dtype=np.float)
+        target = np.asarray(target, 'float32')
+        # target=np.array(target,dtype=np.float)
+        target_weight = np.asarray(target_weight, 'float32')
+        # target_weight=np.array(target_weight,dtype=np.float)
 
         # tf.convert_to_tensor
 

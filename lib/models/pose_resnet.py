@@ -32,9 +32,11 @@ class basic_Block(tensorflow.keras.Model):
 
         self.conv1 = conv3x3(out_filters=planes, strides=strides)
         self.bn1 = BatchNormalization(momentum=BN_MOMENTUM)
+
         self.relu = ReLU()
         self.conv2 = conv3x3(out_filters=planes,strides=strides)
         self.bn2 = BatchNormalization(momentum=BN_MOMENTUM)
+
         self.downsample = with_downsample
         self.stride = strides
         self.planes=planes
@@ -69,12 +71,15 @@ class bottleneck_Block(tensorflow.keras.Model):
         self.conv1 = Conv2D(filters=planes, kernel_size=(1,1),
                                             use_bias=False,padding='same')
         self.bn1 = BatchNormalization(axis=3,momentum=BN_MOMENTUM)
+        self.bn1.trainable = False
         self.conv2 = Conv2D(filters=planes, kernel_size=(3,3), strides=strides,
                                use_bias=False,padding='same')
         self.bn2 = BatchNormalization(axis=3,momentum=BN_MOMENTUM)
+        self.bn2.trainable = False
         self.conv3 = Conv2D(filters=planes * self.expansion, kernel_size=(1,1),
                                use_bias=False,padding='same')
         self.bn3 = BatchNormalization(axis=3,momentum=BN_MOMENTUM)
+        self.bn3.trainable = False
         self.relu = ReLU()
         self.downsample = with_downsample
         self.stride = strides
@@ -86,6 +91,7 @@ class bottleneck_Block(tensorflow.keras.Model):
 
         x = self.conv1(x)
         x = self.bn1(x)
+
         x = self.relu(x)
         x = self.conv2(x)
         x = self.bn2(x)
@@ -93,15 +99,11 @@ class bottleneck_Block(tensorflow.keras.Model):
 
         x = self.conv3(x)
         x = self.bn3(x)
-
         if self.downsample is not None:
             residual = self.downsample(residual)
 
         x = keras.layers.add([x,residual])
-
         x = self.relu(x)
-
-
         return x
 
 
@@ -114,17 +116,14 @@ class PoseResNet(tensorflow.keras.Model):
 
         super(PoseResNet, self).__init__()
 
-
-        # self.padding1=keras.layers.ZeroPadding2D(padding=(3,3))
-
-
         self.conv1 = Conv2D(filters=64, kernel_size=(7,7),
                                 strides=(2,2),use_bias=True,padding="same")
 
 
         self.bn1 = BatchNormalization(momentum=BN_MOMENTUM)
+        self.bn1.trainable = False
         self.relu = ReLU()
-        # self.padding2=keras.layers.ZeroPadding2D(padding=(1,1))
+
         self.maxpool = MaxPooling2D(pool_size=(3,3),
                         strides=(2,2),padding="same")
 
@@ -207,11 +206,10 @@ class PoseResNet(tensorflow.keras.Model):
 
     def call(self, x):
         inputs = x
-        inputs=keras.layers.Input(shape=(inputs.shape),dtype='float64')
-        # x= self.padding1(x)
         x = self.conv1(x)
 
         x = self.bn1(x)
+
         x = self.relu(x)
         # x= self.padding2(x)
         x = self.maxpool(x)
@@ -221,14 +219,6 @@ class PoseResNet(tensorflow.keras.Model):
         x = self.layer4(x)
         x = self.deconv_layers(x)
         x = self.final_layer(x)
-
-
-
-
-        x=keras.layers.Input(shape=(x.shape),dtype='float64')
-
-        model = keras.Model(inputs, x, name="resnet")
-
 
         return x
 
