@@ -42,7 +42,7 @@ class DataGenerator(Sequence):
         # Generate data
         images, target, target_weights,meta = self.__data_generation(list_IDs_temp)
 
-        return (images, target, target_weights)
+        return images, target, target_weights,meta
 
 
     def on_epoch_end(self):

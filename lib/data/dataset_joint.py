@@ -147,9 +147,9 @@ class JointsDataset(Sequence):
 
         X, target,target_weight, meta = self.data_generation(indexes)
 
-        # final=
+    
 
-        return  np.array(X,'float32'),  np.array(target,'float32')
+        return np.array(X,'float32'),  np.array(target,'float32'),np.array(target_weight,'float32')
 
 
 
