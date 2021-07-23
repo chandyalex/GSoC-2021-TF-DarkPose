@@ -19,10 +19,10 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 
 - [x]  Data preparation
 - [x]  Data generator
-- [ ]  Hour glass model
 - [x]  Base line model
-- [ ] Loss function
-- [ ] Evaluation matrix
+- [x]  Loss function
+- [x]  Evaluation matrix
+- [ ]  Hour glass model
 - [ ]  HR Net
 - [ ]  Dark pose implementation
 - [x]  Training script base model https://github.com/chandyalex/Darkpose_Tensorflow/blob/main/jupyter/keras_test.ipynb
@@ -32,3 +32,58 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 - [ ]  Detailed Read me
 - [ ]  Coding standard check
 - [ ]  Launch
+
+### Requirements
+Install python packages using requirement.txt
+
+### Results
+
+| Model  | Accuracy | Download link|Colab note to train |
+| ------------- | ------------- |-------------|-------------|
+|  | | ||
+|   |  | ||
+
+# How to set up repository
+
+#### Data set Download
+
+#### Config file
+
+#### Train model
+
+#### Save model
+
+#### Inference
+
+#### How Use dark pose in other models
+
+## References
+
+## Citation
+If you use our code or models in your research, please cite with:
+```
+@inproceedings{sun2019deep,
+  title={Deep High-Resolution Representation Learning for Human Pose Estimation},
+  author={Sun, Ke and Xiao, Bin and Liu, Dong and Wang, Jingdong},
+  booktitle={CVPR},
+  year={2019}
+}
+
+@inproceedings{xiao2018simple,
+    author={Xiao, Bin and Wu, Haiping and Wei, Yichen},
+    title={Simple Baselines for Human Pose Estimation and Tracking},
+    booktitle = {European Conference on Computer Vision (ECCV)},
+    year = {2018}
+}
+
+@article{WangSCJDZLMTWLX19,
+  title={Deep High-Resolution Representation Learning for Visual Recognition},
+  author={Jingdong Wang and Ke Sun and Tianheng Cheng and
+          Borui Jiang and Chaorui Deng and Yang Zhao and Dong Liu and Yadong Mu and
+          Mingkui Tan and Xinggang Wang and Wenyu Liu and Bin Xiao},
+  journal   = {TPAMI}
+  year={2019}
+}
+
+```
+## Authors or Maintainers
