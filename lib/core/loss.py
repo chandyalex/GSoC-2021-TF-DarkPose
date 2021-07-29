@@ -38,11 +38,13 @@ def ohkm(loss,k=8):
 
 def JointsMSELoss(y_true, y_pred,target_weight=None):
     criterion = keras.losses.MeanSquaredError(reduction="auto")
-    y_pred_ = y_pred.numpy()
-    y_true_ = y_true.numpy()
+    if not isinstance(y_pred,np.ndarray):
+        y_pred = y_pred.numpy()
+        y_true = y_true.numpy()
+        target_weight = target_weight.numpy()
 
-    batch_size = y_pred_.shape[0]
-    num_joints = y_pred_.shape[3]
+    batch_size = y_pred.shape[0]
+    num_joints = y_pred.shape[3]
 
     heatmaps_pred = tf.reshape(y_pred,(num_joints,batch_size, -1))
 
@@ -56,11 +58,10 @@ def JointsMSELoss(y_true, y_pred,target_weight=None):
 
         heatmap_pred= tf.squeeze(heatmaps_pred[idx])
         heatmap_gt = tf.squeeze(heatmaps_gt[idx])
-        if target_weight:
-            target_weight = target_weight.numpy()
+        if target_weight.any():
             loss = tf.math.add(loss, 0.5 * criterion(
-                heatmap_pred.dot(target_weight[:, idx]),
-                heatmap_gt.dot(target_weight[:, idx])))
+                tf.math.multiply(heatmap_pred,target_weight[:, idx]),
+                tf.math.multiply(heatmap_gt,target_weight[:, idx])))
         else:
             loss = tf.math.add(loss, 0.5 * criterion(heatmap_pred, heatmap_gt))
 

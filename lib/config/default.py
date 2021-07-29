@@ -102,14 +102,14 @@ _C.TRAIN.END_EPOCH = 140
 _C.TRAIN.RESUME = False
 _C.TRAIN.CHECKPOINT = ''
 
-_C.TRAIN.BATCH_SIZE_PER_GPU = 32
+_C.TRAIN.BATCH_SIZE_PER_GPU = 8
 _C.TRAIN.SHUFFLE = True
 
 # testing
 _C.TEST = CN()
 
 # size of images for each device
-_C.TEST.BATCH_SIZE_PER_GPU = 32
+_C.TEST.BATCH_SIZE_PER_GPU = 8
 # Test Model Epoch
 _C.TEST.FLIP_TEST = False
 _C.TEST.POST_PROCESS = False

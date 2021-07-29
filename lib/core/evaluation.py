@@ -70,9 +70,10 @@ def accuracy(output, target, hm_type='gaussian', thr=0.5):
     First value to be returned is average accuracy across 'idxs',
     followed by individual accuracies
     '''
-    output = output.numpy()
-    target = target.numpy()
-
+    if not isinstance(output,np.ndarray):
+        output = output.numpy()
+    if not isinstance(target,np.ndarray):
+        target = target.numpy()
 
     idx = list(range(output.shape[3]))
     norm = 1.0
@@ -110,4 +111,4 @@ def accuracy(output, target, hm_type='gaussian', thr=0.5):
     # print(pred.shape)
     # avg_acc, cnt, pred
 
-    return acc
+    return acc, avg_acc, cnt, pred
