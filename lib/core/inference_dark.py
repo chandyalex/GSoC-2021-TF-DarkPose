@@ -57,8 +57,10 @@ def get_max_preds(batch_heatmaps):
 
 def get_final_preds(config, batch_heatmaps, center, scale):
     coords, maxvals = get_max_preds(batch_heatmaps)
-    heatmap_height=heatmap_height.numpy()
-    heatmap_width = heatmap_width.numpy()
+    if not isinstance(batch_heatmaps,np.ndarray):
+        batch_heatmaps=batch_heatmaps.numpy()
+
+    # heatmap_width = heatmap_width.numpy()
     coords=coords.numpy()
     maxvals=maxvals.numpy()
 

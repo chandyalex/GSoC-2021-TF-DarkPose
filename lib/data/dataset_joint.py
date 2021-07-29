@@ -166,7 +166,7 @@ class JointsDataset(Sequence):
         batch_images = np.zeros(shape=(self.batch_size, self.image_size[0], self.image_size[1], 3), dtype=np.float)
         batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[0], self.output_size[1], 17), dtype=np.float)
         batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float)
-        batch_metainfo = list()
+        batch_metainfo = []
         # X = []
         # target = []
         # target_weight=[]
