@@ -1,9 +1,16 @@
-# ------------------------------------------------------------------------------
-# Copyright (c) Microsoft
-# Licensed under the MIT License.
-# Written by Bin Xiao (Bin.Xiao@microsoft.com)
-# ------------------------------------------------------------------------------
-
+# Copyright 2021 The TensorFlow Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -14,9 +21,7 @@ import time
 from collections import namedtuple
 from pathlib import Path
 
-import torch
-import torch.optim as optim
-import torch.nn as nn
+import tensorflow as tf
 
 
 def create_logger(cfg, cfg_name, phase='train'):
@@ -60,16 +65,14 @@ def create_logger(cfg, cfg_name, phase='train'):
 def get_optimizer(cfg, model):
     optimizer = None
     if cfg.TRAIN.OPTIMIZER == 'sgd':
-        optimizer = optim.SGD(
-            model.parameters(),
+        optimizer = tf.keras.optimizers.SGD(
             lr=cfg.TRAIN.LR,
             momentum=cfg.TRAIN.MOMENTUM,
             weight_decay=cfg.TRAIN.WD,
             nesterov=cfg.TRAIN.NESTEROV
         )
     elif cfg.TRAIN.OPTIMIZER == 'adam':
-        optimizer = optim.Adam(
-            model.parameters(),
+        optimizer = tf.keras.optimizers.Adam(
             lr=cfg.TRAIN.LR
         )
 

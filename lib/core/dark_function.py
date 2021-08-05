@@ -1,3 +1,16 @@
+# Copyright 2021 The TensorFlow Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -24,11 +37,14 @@ def train(config, train_loader, model, criterion, optimizer,epoch,
     data_time = AverageMeter()
     losses = AverageMeter()
     acc = AverageMeter()
+    input, target, target_weight, meta=train_loader[0]
 
-
+    model.build(input_shape=input.shape)
 
     model.summary()
     end = time.time()
+    start_time = epoch_start_time = time.time()
+    steps_per_epoch=20
 
     for step, (input, target, target_weight, meta) in enumerate(train_loader):
         # measure data loading time
@@ -59,7 +75,8 @@ def train(config, train_loader, model, criterion, optimizer,epoch,
 
         loss=loss.numpy()
 
-        losses.update(loss.item(), input.size)
+
+        losses.update(loss.item(), input.shape[0])
 
         _, avg_acc, cnt, pred = accuracy(output,target)
         acc.update(avg_acc, cnt)
@@ -67,11 +84,18 @@ def train(config, train_loader, model, criterion, optimizer,epoch,
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
-        if step % 200 == 0:
-            print(
-                "Training loss (for one batch) at step %d: %.4f"
-                % (step, float(loss)))
-            print("Seen so far: %s samples" % ((step + 1) * 64))
+
+        if step % config.PRINT_FREQ == 0:
+            msg = 'Epoch: [{0}][{1}/{2}]\t' \
+                  'Time {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
+                  'Speed {speed:.1f} samples/s\t' \
+                  'Data {data_time.val:.3f}s ({data_time.avg:.3f}s)\t' \
+                  'Loss {loss.val:.5f} ({loss.avg:.5f})\t' \
+                  'Accuracy {acc.val:.3f} ({acc.avg:.3f})'.format(
+                      epoch, step, len(train_loader), batch_time=batch_time,
+                      speed=input.shape[0]/batch_time.val,
+                      data_time=data_time, loss=losses, acc=acc)
+            print(msg)
 
 def validate(config, val_loader, model, criterion, output_dir='',
              tb_log_dir='', writer_dict=None):
@@ -122,7 +146,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
 
         loss=loss.numpy()
 
-        num_images = input.size
+        num_images = input.shape[0]
         # measure accuracy and record loss
         losses.update(loss.item(), num_images)
         _, avg_acc, cnt, pred = accuracy(output,target)
