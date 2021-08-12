@@ -27,7 +27,7 @@ from tensorflow.python.keras.utils.data_utils import Sequence
 # from tensorflow.keras.utils import Sequence
 #
 import sys
-sys.path.append("/home/chandy/gsoc/Darkpose_Tensorflow/lib")
+
 #### to be removed later
 from utils.transforms import get_affine_transform
 from utils.transforms import affine_transform

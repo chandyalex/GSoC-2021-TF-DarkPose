@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import sys
-sys.path.append("/home/chandy/gsoc/Darkpose_Tensorflow/lib")
+
 import numpy as np
 from pycocotools.coco import COCO
 from data import coco
