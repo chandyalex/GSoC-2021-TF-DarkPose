@@ -270,8 +270,8 @@ class PoseResNet(tensorflow.keras.Model):
 
       for m in self.layers:
         if isinstance(m, Conv2D):
-            initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
-            m.kernel_initializer=initializer
+          initializer=initializers.RandomNormal(mean=0.0, stddev=0.001)
+          m.kernel_initializer=initializer
 
         elif isinstance(m, BatchNormalization):
           initializer=initializers.Constant(value=1)
@@ -301,6 +301,6 @@ def get_pose_net(cfg, is_train, **kwargs):
   model = PoseResNet(block_class, layers, cfg, **kwargs)
 
   if is_train and cfg.MODEL.INIT_WEIGHTS:
-      model.init_weights(cfg.MODEL.PRETRAINED)
+    model.init_weights(cfg.MODEL.PRETRAINED)
 
   return model
