@@ -1,8 +1,12 @@
+DISCLAIMER: this Darkpose Tensorflow implementation is still under development. No support will be provided during the development phase.
+
 # Darkpose Tensorflow
 Dark Pose implementation Tensorflow
 
+
+
 Link to TF Model Garden GitHub issue: https://github.com/tensorflow/models/issues/8713 \
-Link to paper: https://arxiv.org/abs/1910.06278
+Link to paper:[![Paper](http://img.shields.io/badge/Paper-arXiv.1804.02767-B3181B?logo=arXiv)](https://arxiv.org/abs/1910.06278)
 
 ### Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
@@ -34,17 +38,21 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 - [ ]  Launch
 
 ### Requirements
-Install python packages using requirement.txt
+The resitory tested with \
+Tensorflow 2.5 \
+Anaconda 3.8
 
-### Results
 
-| Model  | Accuracy | Download link|Colab note to train |
-| ------------- | ------------- |-------------|-------------|
-|  | | ||
-|   |  | ||
+
 
 # How to set up repository
 
+```
+$ git clone link
+$ cd Darkpose_Tensorflow
+$ pip install -r requirements.txt
+
+```
 #### Data set Download
 
 #### Config file
@@ -56,6 +64,13 @@ Install python packages using requirement.txt
 #### Inference
 
 #### How Use dark pose in other models
+
+### Results
+
+| Model  | Accuracy | Download link|Colab note to train |
+| ------------- | ------------- |-------------|-------------|
+|  | | ||
+|   |  | ||
 
 ## References
 
@@ -87,3 +102,5 @@ If you use our code or models in your research, please cite with:
 
 ```
 ## Authors or Maintainers
+
+* Chandykunju Alex ([@GitHub chandyalex](https://github.com/chandyalex))

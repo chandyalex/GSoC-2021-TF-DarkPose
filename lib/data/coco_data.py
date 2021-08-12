@@ -20,9 +20,9 @@ import os
 from tensorflow.keras.utils import Sequence
 
 class DataGenerator(Sequence):
-    'Generates data for Keras'
+    
     def __init__(self, cfg, batch_size=32, dim=(256,256,3), n_channels=3,
-                 n_classes=10, shuffle=True):
+        n_classes=10, shuffle=True):
         'Initialization'
 
         self.dim = dim
