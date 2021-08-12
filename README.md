@@ -55,6 +55,26 @@ $ pip install -r requirements.txt
 ```
 #### Data set Download
 
+Download COCO dataset from here: https://cocodataset.org/#download
+
+For the COCO dataset, your directory tree should look like this:
+
+```
+${POSE_ROOT}/data/mpii
+├── images
+└── mpii_human_pose_v1_u12_1.mat
+|—— annot
+|   |—— gt_valid.mat
+└── |—— test.json
+    |   |—— train.json
+    |   |—— trainval.json
+    |   |—— valid.json
+    └── images
+        |—— 000001163.jpg
+        |—— 000003072.jpg
+
+```
+
 #### Config file
 
 #### Train model
@@ -69,8 +89,14 @@ $ pip install -r requirements.txt
 
 | Model  | Accuracy | Download link|Colab note to train |
 | ------------- | ------------- |-------------|-------------|
-|  | | ||
-|   |  | ||
+| SimpleBaseline-R50  |  | ||
+| **SimpleBaseline-R50 + DARK**  | | ||
+| SimpleBaseline-R101  |  | ||
+| **SimpleBaseline-R101 + DARK** |  | ||
+| SimpleBaseline-R152 |  | ||
+| **SimpleBaseline-R152 + DARK** |  | ||
+
+
 
 ## References
 
