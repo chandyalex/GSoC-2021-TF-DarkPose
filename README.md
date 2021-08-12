@@ -6,7 +6,7 @@ Dark Pose implementation Tensorflow
 
 
 Link to TF Model Garden GitHub issue: https://github.com/tensorflow/models/issues/8713 \
-Link to paper:[![Paper](http://img.shields.io/badge/Paper-arXiv.1804.02767-B3181B?logo=arXiv)](https://arxiv.org/abs/1910.06278)
+Link to paper: [![Paper](http://img.shields.io/badge/Paper-arXiv.1804.02767-B3181B?logo=arXiv)](https://arxiv.org/abs/1910.06278)
 
 ### Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
