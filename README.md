@@ -27,8 +27,8 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 - [x]  Loss function
 - [x]  Evaluation matrix
 - [x]  Dark pose implementation
-- [x]  Training script base model https://github.com/chandyalex/Darkpose_Tensorflow/blob/main/jupyter/keras_test.ipynb
-- [x]  Training of base model with darkpose https://github.com/chandyalex/Darkpose_Tensorflow/blob/main/jupyter/Dark_pose_training_testing.ipynb
+- [x]  [Training script base model](jupyter/keras_test.ipynb)
+- [x]  [Training of base model with darkpose](/jupyter/Dark_pose_training_testing.ipynb)
 - [ ]  Hour glass model
 - [ ]  HR Net
 - [ ]  Training with pre-trained model
@@ -82,8 +82,11 @@ ${POSE_ROOT}/data/mpii
 
 #### Config file
 
+To adjust Training rameters try to tweek following file
 
 #### Train model
+
+To train the model without dark 
 
 #### Save model
 
