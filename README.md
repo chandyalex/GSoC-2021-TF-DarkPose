@@ -86,13 +86,39 @@ To adjust Training rameters try to tweek following file
 
 #### Train model
 
-To train the model without dark 
+* Train the model without dark 
+```
+# load the data
+data_gen = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True)
 
-#### Save model
+# initialize model
+model= pose_resnet.get_pose_net(cfg, is_train=True)
+model.build(input_shape=(None,256, 256, 3))
+model.compile(loss=JointsMSELoss, optimizer='SGD',run_eagerly=True,metrics=accuracy)
+model.summary()
 
-#### Inference
+# train
+model.fit(data_gen,epochs=2)
+```
+* Train the model with dark \
+The dark method is implemented in the core library 
+It can be aceesd [here](lib/core/dark_function.py)
 
-#### How Use dark pose in other models
+
+
+```
+from core.dark_function import train,validate
+
+data_gen = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET TRAIN_SET, True)
+# Initialize model
+model= pose_resnet.get_pose_net(cfg, is_train=True)
+# Initilize optimizer
+optimizer = get_optimizer(cfg, model)
+#Start training uisng the loop method
+epoch=2
+for i in range(epoch):
+    train(cfg,data_gen,model,JointsMSELoss,optimizer,i)
+```
 
 ### Results
 
