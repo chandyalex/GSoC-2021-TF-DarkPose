@@ -53,6 +53,11 @@ $ cd Darkpose_Tensorflow
 $ pip install -r requirements.txt
 
 ```
+After intalling all dendencies go to $REPO/lib
+and run 
+```
+make
+```
 #### Data set Download
 
 Download COCO dataset from here: https://cocodataset.org/#download
@@ -76,6 +81,7 @@ ${POSE_ROOT}/data/mpii
 ```
 
 #### Config file
+
 
 #### Train model
 
