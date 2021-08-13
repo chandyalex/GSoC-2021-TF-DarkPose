@@ -24,7 +24,7 @@ _C = CN()
 
 _C.OUTPUT_DIR = ''
 _C.LOG_DIR = ''
-_C.DATA_DIR = '/home/chandy/coco_data/data/coco/'
+_C.DATA_DIR = ''
 _C.GPUS = (0,)
 _C.WORKERS = 4
 _C.PRINT_FREQ = 500
@@ -71,7 +71,7 @@ _C.LOSS.USE_DIFFERENT_JOINTS_WEIGHT = False
 
 # DATASET related params
 _C.DATASET = CN()
-_C.DATASET.ROOT = '/home/chandy/coco_data/data/coco/'
+_C.DATASET.ROOT = ''
 _C.DATASET.DATASET = 'coco'
 _C.DATASET.TRAIN_SET = 'train'
 _C.DATASET.TEST_SET = 'valid'
