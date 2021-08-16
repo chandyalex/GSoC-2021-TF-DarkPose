@@ -71,7 +71,7 @@ _C.LOSS.USE_DIFFERENT_JOINTS_WEIGHT = False
 
 # DATASET related params
 _C.DATASET = CN()
-_C.DATASET.ROOT = ''
+_C.DATASET.ROOT = '/home/chandy/coco_data/data/coco/'
 _C.DATASET.DATASET = 'coco'
 _C.DATASET.TRAIN_SET = 'train'
 _C.DATASET.TEST_SET = 'valid'

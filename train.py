@@ -68,11 +68,6 @@ def main():
   logger.info(cfg)
 
 
-
-  model = eval('models.'+cfg.MODEL.NAME+'.get_pose_net')(
-      cfg, is_train=True
-  )
-
   # copy model file
   this_dir = os.path.dirname(__file__)
   shutil.copy2(
@@ -89,13 +84,6 @@ def main():
  
   # writer_dict['writer'].add_graph(model, (dump_input, ))
 
-  
-
-  # define loss function (criterion) and optimizer
-  optimizer = get_optimizer(cfg, model)
-  criterion = JointsMSELoss
-
-
   train_dataset = coco.COCODataset(
     cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True
     )
@@ -103,6 +91,21 @@ def main():
   valid_dataset = coco.COCODataset(
       cfg, cfg.DATASET.ROOT, cfg.DATASET.TEST_SET, False
       )
+
+  input, target, target_weight, meta = train_dataset[0]
+
+  model = eval('models.'+cfg.MODEL.NAME+'.get_pose_net')(
+      cfg, is_train=True
+  )
+
+  model.build(input_shape=input.shape)
+
+  # define loss function (criterion) and optimizer
+  optimizer = get_optimizer(cfg, model)
+  criterion = JointsMSELoss
+
+  model.compile(optimizer, criterion)
+
 
 
   best_perf = 0.0
@@ -129,15 +132,15 @@ def main():
 
     # lr_scheduler.step()
 
-    # train for one epoch
-    train(cfg, train_dataset , model, criterion, optimizer, epoch,
-          final_output_dir, tb_log_dir)
+    # train(cfg, train_dataset , model, criterion, optimizer, epoch,
+    #       final_output_dir, tb_log_dir)
 
 
     # evaluate on validation set
     perf_indicator = validate(
-        cfg, valid_loader, valid_dataset, model, criterion,
-        final_output_dir, tb_log_dir)
+        cfg, valid_dataset, model, criterion)
+
+    print(perf_indicator)
 
     if perf_indicator >= best_perf:
         best_perf = perf_indicator

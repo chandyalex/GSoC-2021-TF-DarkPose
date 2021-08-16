@@ -25,6 +25,7 @@ import tensorflow as tf
 
 from core.evaluation import accuracy
 from core.inference_dark import get_final_preds
+from utils.transforms import flip_back
 
 
 
@@ -37,10 +38,7 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
   data_time = AverageMeter()
   losses = AverageMeter()
   acc = AverageMeter()
-  input, target, target_weight, meta = train_loader[0]
-
-  model.build(input_shape=input.shape)
-
+  
   model.summary()
   end = time.time()
   start_time = epoch_start_time = time.time()
@@ -126,19 +124,22 @@ def validate(config, val_loader, model, criterion, output_dir='',
 
 
     if config.TEST.FLIP_TEST:
+    
+      input_flipped = np.flip(input, 3).copy()
+    
+  
 
-      input_flipped = tf.reverse(input, 3).copy()
-      input_flipped = input_flipped.numpy()
-      outputs_flipped = model.evaluate(input_flipped)
+      outputs_flipped = model(input_flipped,training=False)
 
       if isinstance(outputs_flipped, list):
         output_flipped = outputs_flipped[-1]
       else:
         output_flipped = outputs_flipped
-
-      output_flipped = tf.reverse(output_flipped,
-                                  val_dataset.flip_pairs)
+      
       output_flipped = output_flipped.numpy()
+
+      output_flipped = flip_back(output_flipped,val_loader.flip_pairs)
+      
 
       output = (output + output_flipped) * 0.5
 
@@ -170,6 +171,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
       c = np.array(c)
       s = np.array(s)
 
+ 
 
       preds, maxvals = get_final_preds(config, output, c, s)
 
@@ -191,10 +193,18 @@ def validate(config, val_loader, model, criterion, output_dir='',
                   i, len(val_loader), batch_time=batch_time,
                   loss=losses, acc=acc)
         logger.info(msg)
+        print(msg)
 
-        prefix = '{}_{}'.format(
-            os.path.join(output_dir, 'val'), i
-        )
+        # prefix = '{}_{}'.format(
+        #     os.path.join(output_dir, 'val'), i
+
+        # )
+  name_values, perf_indicator = val_loader.evaluate(
+      config, all_preds, output_dir, all_boxes, image_path,
+      filenames, imgnums
+  )
+  return perf_indicator
+      
 
 class AverageMeter(object):
   """Computes and stores the average and current value"""
