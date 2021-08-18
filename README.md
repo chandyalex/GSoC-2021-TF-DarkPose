@@ -5,10 +5,25 @@ Dark Pose implementation Tensorflow
 
 This project is done as the part of google smmer of code 2021 
 
+## Mentors
+
+* Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
+*  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
+
+
 [GSOC 2021 project link](https://summerofcode.withgoogle.com/projects/#6367695945072640)
 
 Link to TF Model Garden GitHub issue: https://github.com/tensorflow/models/issues/8713 \
 Link to paper: [![Paper](http://img.shields.io/badge/Paper-arXiv.1804.02767-B3181B?logo=arXiv)](https://arxiv.org/abs/1910.06278)
+
+
+
+
+<img align="center" src="assets/GSoC-icon-192.png"> </img>
+
+<img align="right" height="50%" width="45%" src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png"> </img> 
+
+
 
 ### Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
@@ -168,7 +183,3 @@ If you use our code or models in your research, please cite with:
 
 * Chandykunju Alex ([@GitHub chandyalex](https://github.com/chandyalex))
 
-## Mentors
-
-* Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
-*  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
