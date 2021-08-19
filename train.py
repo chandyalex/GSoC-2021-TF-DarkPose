@@ -118,7 +118,7 @@ def main():
   )
 
   if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
-      logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
+    logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
       
 
  
@@ -127,7 +127,8 @@ def main():
   #     optimizer, cfg.TRAIN.LR_STEP, cfg.TRAIN.LR_FACTOR,
   #     last_epoch=last_epoch
   # )
-
+  print("dhkjlhfsakjhf;klsjd;lksj")
+  print(tb_log_dir)
   for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
 
     # lr_scheduler.step()
@@ -137,16 +138,18 @@ def main():
 
 
     # evaluate on validation set
+    
     perf_indicator = validate(
-        cfg, valid_dataset, model, criterion)
+        cfg, valid_dataset, model, criterion,
+        final_output_dir, tb_log_dir)
 
     print(perf_indicator)
 
     if perf_indicator >= best_perf:
-        best_perf = perf_indicator
-        best_model = True
+      best_perf = perf_indicator
+      best_model = True
     else:
-        best_model = False
+      best_model = False
 
     logger.info('=> saving checkpoint to {}'.format(final_output_dir))
 
