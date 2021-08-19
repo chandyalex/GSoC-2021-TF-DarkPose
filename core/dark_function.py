@@ -108,7 +108,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
       dtype=np.float32
   )
   all_boxes = np.zeros((num_samples, 6))
-  image_path = []
+  
   filenames = []
   imgnums = []
   idx = 0
@@ -161,12 +161,17 @@ def validate(config, val_loader, model, criterion, output_dir='',
       c = []
       s = []
       score = []
+      meta_ = []
+      image_path = []
+   
 
       for batch_id in range(input.shape[0]):
         c.append(meta[batch_id]['center'])
         s.append(meta[batch_id]['scale'])
         score.append(meta[batch_id]['score'])
-        image_path.extend(meta[batch_id]['image'])
+        image_path.append(meta[batch_id]['image'])
+
+  
 
       c = np.array(c)
       s = np.array(s)
@@ -182,6 +187,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
       all_boxes[idx:idx + num_images, 2:4] = s[:, 0:2]
       all_boxes[idx:idx + num_images, 4] = np.prod(s*200, 1)
       all_boxes[idx:idx + num_images, 5] = score
+      
 
       # idx = idx+num_images
 

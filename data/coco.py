@@ -314,15 +314,14 @@ class COCODataset(JointsDataset):
     # person x (keypoints)
     _kpts = []
     for idx, kpt in enumerate(preds):
-      print(img_path[idx])
-      print(int(str(img_path[idx][-16:-4])))
+      print(int(float(img_path[idx][-16:-4])))
       _kpts.append({
           'keypoints': kpt,
           'center': all_boxes[idx][0:2],
           'scale': all_boxes[idx][2:4],
           'area': all_boxes[idx][4],
           'score': all_boxes[idx][5],
-          'image': int(str(img_path[idx][-16:-4]))
+          'image': int(float(img_path[idx][-16:-4]))
       })
     # image x person x (keypoints)
     kpts = defaultdict(list)
@@ -413,34 +412,38 @@ class COCODataset(JointsDataset):
       if len(img_kpts) == 0:
         continue
 
-        _key_points = np.array([img_kpts[k]['keypoints']
-                                for k in range(len(img_kpts))])
-        key_points = np.zeros(
-            (_key_points.shape[0], self.num_joints * 3), dtype=np.float
-        )
+      _key_points = np.array([img_kpts[k]['keypoints']
+                              for k in range(len(img_kpts))])
+      key_points = np.zeros(
+          (_key_points.shape[0], self.num_joints * 3), dtype=np.float
+      )
 
-        for ipt in range(self.num_joints):
-          key_points[:, ipt * 3 + 0] = _key_points[:, ipt, 0]
-          key_points[:, ipt * 3 + 1] = _key_points[:, ipt, 1]
-          key_points[:, ipt * 3 + 2] = _key_points[:, ipt, 2]  # keypoints score.
+      for ipt in range(self.num_joints):
+        key_points[:, ipt * 3 + 0] = _key_points[:, ipt, 0]
+        key_points[:, ipt * 3 + 1] = _key_points[:, ipt, 1]
+        key_points[:, ipt * 3 + 2] = _key_points[:, ipt, 2]  # keypoints score.
 
-        result = [
-            {
-                'image_id': img_kpts[k]['image'],
-                'category_id': cat_id,
-                'keypoints': list(key_points[k]),
-                'score': img_kpts[k]['score'],
-                'center': list(img_kpts[k]['center']),
-                'scale': list(img_kpts[k]['scale'])
-            }
-            for k in range(len(img_kpts))
-        ]
-        cat_results.extend(result)
+      result = [
+          {
+              'image_id': img_kpts[k]['image'],
+              'category_id': cat_id,
+              'keypoints': list(key_points[k]),
+              'score': img_kpts[k]['score'],
+              'center': list(img_kpts[k]['center']),
+              'scale': list(img_kpts[k]['scale'])
+          }
+          for k in range(len(img_kpts))
+      ]
+      cat_results.extend(result)
 
     return cat_results
 
   def _do_python_keypoint_eval(self, res_file, res_folder):
+    print("dshgjdhfg the res file")
+    print("coco ecal testing")
     coco_dt = self.coco.loadRes(res_file)
+    print(coco_dt)
+    print(self.coco)
     coco_eval = COCOeval(self.coco, coco_dt, 'keypoints')
     coco_eval.params.useSegm = None
     coco_eval.evaluate()

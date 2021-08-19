@@ -16,7 +16,7 @@ import tensorflow as tf
 import models
 from data import coco
 from data import coco_data
-from core.loss import JointsMSELoss,JointsOHKMMSELoss,dice_loss
+from core.loss import JointsMSELoss, JointsOHKMMSELoss, dice_loss
 from models import pose_resnet
 from core.evaluation import accuracy
 from utils.utils import get_optimizer
@@ -73,16 +73,6 @@ def main():
   shutil.copy2(
       os.path.join(this_dir, 'models', cfg.MODEL.NAME + '.py'),
       final_output_dir)
-  # logger.info(pprint.pformat(model))
-
-  # writer_dict = {
-  #     'writer': SummaryWriter(log_dir=tb_log_dir),
-  #     'train_global_steps': 0,
-  #     'valid_global_steps': 0,
-  # }
-
- 
-  # writer_dict['writer'].add_graph(model, (dump_input, ))
 
   train_dataset = coco.COCODataset(
     cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True
@@ -121,20 +111,15 @@ def main():
     logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
       
 
- 
 
-  # lr_scheduler = tf.keras.callbacks.LearningRateScheduler(
-  #     optimizer, cfg.TRAIN.LR_STEP, cfg.TRAIN.LR_FACTOR,
-  #     last_epoch=last_epoch
-  # )
   print("dhkjlhfsakjhf;klsjd;lksj")
   print(tb_log_dir)
   for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
 
-    # lr_scheduler.step()
 
-    # train(cfg, train_dataset , model, criterion, optimizer, epoch,
-    #       final_output_dir, tb_log_dir)
+
+    train(cfg, train_dataset , model, criterion, optimizer, epoch,
+          final_output_dir, tb_log_dir)
 
 
     # evaluate on validation set
@@ -155,12 +140,12 @@ def main():
 
 
   final_model_state_file = os.path.join(
-    final_output_dir, 'final_state.h5')
+    final_output_dir, 'final_state')
 
   logger.info('=> saving final model state to {}'.format(
       final_model_state_file))
 
-  model.save(model.module.state_dict(), final_model_state_file)
+  tf.keras.models.save_model(model,final_model_state_file)
 
 
 
