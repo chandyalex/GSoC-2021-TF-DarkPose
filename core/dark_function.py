@@ -129,7 +129,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
     
   
 
-      outputs_flipped = model(input_flipped,training=False)
+      outputs_flipped = model(input_flipped, training=False)
 
       if isinstance(outputs_flipped, list):
         output_flipped = outputs_flipped[-1]
@@ -138,7 +138,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
       
       output_flipped = output_flipped.numpy()
 
-      output_flipped = flip_back(output_flipped,val_loader.flip_pairs)
+      output_flipped = flip_back(output_flipped, val_loader.flip_pairs)
       
 
       output = (output + output_flipped) * 0.5

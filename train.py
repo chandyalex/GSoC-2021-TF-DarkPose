@@ -22,7 +22,7 @@ from core.evaluation import accuracy
 from utils.utils import get_optimizer
 
 
-from core.dark_function import train,validate
+from core.dark_function import train, validate
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Train keypoints network')
@@ -74,13 +74,9 @@ def main():
       os.path.join(this_dir, 'models', cfg.MODEL.NAME + '.py'),
       final_output_dir)
 
-  train_dataset = coco.COCODataset(
-    cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True
-    )
+  train_dataset = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True)
 
-  valid_dataset = coco.COCODataset(
-      cfg, cfg.DATASET.ROOT, cfg.DATASET.TEST_SET, False
-      )
+  valid_dataset = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET.TEST_SET, False)
 
   input, target, target_weight, meta = train_dataset[0]
 
@@ -118,8 +114,7 @@ def main():
 
 
 
-    train(cfg, train_dataset , model, criterion, optimizer, epoch,
-          final_output_dir, tb_log_dir)
+    train(cfg, train_dataset, model, criterion, optimizer, epoch, final_output_dir, tb_log_dir)
 
 
     # evaluate on validation set
@@ -139,13 +134,12 @@ def main():
     logger.info('=> saving checkpoint to {}'.format(final_output_dir))
 
 
-  final_model_state_file = os.path.join(
-    final_output_dir, 'final_state')
+  final_model_state_file = os.path.join(final_output_dir, 'final_state')
 
   logger.info('=> saving final model state to {}'.format(
       final_model_state_file))
 
-  tf.keras.models.save_model(model,final_model_state_file)
+  tf.keras.models.save_model(model, final_model_state_file)
 
 
 
