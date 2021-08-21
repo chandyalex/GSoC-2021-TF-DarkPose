@@ -17,8 +17,8 @@ from __future__ import division
 from __future__ import print_function
 
 import math
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 from utils.transforms import transform_preds
 
 def get_max_preds(batch_heatmaps):

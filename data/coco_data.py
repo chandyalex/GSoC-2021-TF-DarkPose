@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
-from pycocotools.coco import COCO
-from data import coco
 import os
+import numpy as np
 from tensorflow.keras.utils import Sequence
+
+from data import coco
+from pycocotools.coco import COCO
 
 class DataGenerator(Sequence):
     

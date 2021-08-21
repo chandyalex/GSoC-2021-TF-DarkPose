@@ -15,10 +15,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-import numpy as np
-import keras.backend as K
+import tensorflow.keras.backend as K
 
 
 #https://www.tensorflow.org/guide/keras/train_and_evaluate#custom_losses

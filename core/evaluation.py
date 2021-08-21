@@ -17,7 +17,6 @@ from __future__ import print_function
 
 import numpy as np
 import tensorflow as tf
-
 from core.inference_dark import get_max_preds
 
 

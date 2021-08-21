@@ -20,14 +20,15 @@ from collections import OrderedDict
 import logging
 import os
 
+import numpy as np
+import json_tricks as json
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
-import json_tricks as json
-import numpy as np
 
-from data.dataset_joint import JointsDataset
+
 from nms.nms import oks_nms
 from nms.nms import soft_oks_nms
+from data.dataset_joint import JointsDataset
 
 
 

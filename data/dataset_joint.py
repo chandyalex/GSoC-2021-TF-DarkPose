@@ -24,11 +24,11 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.keras.utils.data_utils import Sequence
 
-from utils.transforms import get_affine_transform
-from utils.transforms import affine_transform
-from utils.transforms import fliplr_joints
-
 from pycocotools.coco import COCO
+from utils.transforms import fliplr_joints
+from utils.transforms import affine_transform
+from utils.transforms import get_affine_transform
+
 
 dataset = tf.data.Dataset
 logger = logging.getLogger(__name__)

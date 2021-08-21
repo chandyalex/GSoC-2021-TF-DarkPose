@@ -24,8 +24,9 @@ import numpy as np
 import tensorflow as tf
 
 from core.evaluation import accuracy
-from core.inference_dark import get_final_preds
 from utils.transforms import flip_back
+from core.inference_dark import get_final_preds
+
 
 
 
