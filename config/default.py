@@ -71,10 +71,10 @@ _C.LOSS.USE_DIFFERENT_JOINTS_WEIGHT = False
 
 # DATASET related params
 _C.DATASET = CN()
-_C.DATASET.ROOT = '/home/chandy/coco_data/data/coco/'
+_C.DATASET.ROOT = '/home/chandy/data/'
 _C.DATASET.DATASET = 'coco'
-_C.DATASET.TRAIN_SET = 'train'
-_C.DATASET.TEST_SET = 'valid'
+_C.DATASET.TRAIN_SET = 'train2017'
+_C.DATASET.TEST_SET = 'valid2017'
 _C.DATASET.DATA_FORMAT = 'jpg'
 _C.DATASET.HYBRID_JOINTS_TYPE = ''
 _C.DATASET.SELECT_DATA = False

@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -22,7 +23,14 @@ from core.evaluation import accuracy
 from utils.utils import get_optimizer
 
 
+
 from core.dark_function import train, validate
+
+tpu = None
+tpu = tf.distribute.cluster_resolver.TPUClusterResolver('gsoc-dark') # TPU detection
+tf.config.experimental_connect_to_cluster(tpu)
+tf.tpu.experimental.initialize_tpu_system(tpu)
+strategy = tf.distribute.experimental.TPUStrategy(tpu)
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Train keypoints network')
@@ -144,4 +152,5 @@ def main():
 
 
 if __name__ == '__main__':
-  main()
+  with strategy.scope():
+    main()

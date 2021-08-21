@@ -69,7 +69,8 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
     grads = tape.gradient(loss, model.trainable_weights)
     # Run one step of gradient descent by updating
     # the value of the variables to minimize the loss.
-    optimizer.apply_gradients(zip(grads, model.trainable_weights))
+    optimizer.distributed_apply(zip(grads, model.trainable_weights))
+    #optimizer.apply_gradients(zip(grads, model.trainable_weights))
 
     loss = loss.numpy()
 

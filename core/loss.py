@@ -50,7 +50,7 @@ def ohkm(loss,k=8):
   return arg
 
 def JointsMSELoss(y_true, y_pred,target_weight=None):
-  criterion = keras.losses.MeanSquaredError(reduction="auto")
+  criterion = keras.losses.MeanSquaredError(reduction=tf.keras.losses.Reduction.SUM)
   if not isinstance(y_pred,np.ndarray):
       y_pred = y_pred.numpy()
       y_true = y_true.numpy()
