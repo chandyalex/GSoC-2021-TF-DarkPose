@@ -82,18 +82,13 @@ Download COCO dataset from here: https://cocodataset.org/#download
 For the COCO dataset, your directory tree should look like this:
 
 ```
-${POSE_ROOT}/data/mpii
+${POSE_ROOT}/data/coco
+├── annotations
 ├── images
-└── mpii_human_pose_v1_u12_1.mat
-|—— annot
-|   |—— gt_valid.mat
-└── |—— test.json
-    |   |—— train.json
-    |   |—— trainval.json
-    |   |—— valid.json
-    └── images
-        |—— 000001163.jpg
-        |—— 000003072.jpg
+│   ├── test2017
+│   ├── train2017
+│   └── val2017
+└── person_detection_results
 
 ```
 
