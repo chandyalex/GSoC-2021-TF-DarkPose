@@ -92,8 +92,6 @@ def main():
 
   model.compile(optimizer, criterion)
 
-
-
   best_perf = 0.0
   best_model = False
   last_epoch = -1
@@ -105,18 +103,10 @@ def main():
 
   if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
     logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
-      
 
-
-  print("dhkjlhfsakjhf;klsjd;lksj")
-  print(tb_log_dir)
   for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
 
-
-
     train(cfg, train_dataset, model, criterion, optimizer, epoch, final_output_dir, tb_log_dir)
-
-
     # evaluate on validation set
     
     perf_indicator = validate(

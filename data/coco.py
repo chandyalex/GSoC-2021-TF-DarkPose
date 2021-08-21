@@ -315,7 +315,6 @@ class COCODataset(JointsDataset):
     # person x (keypoints)
     _kpts = []
     for idx, kpt in enumerate(preds):
-      print(int(float(img_path[idx][-16:-4])))
       _kpts.append({
           'keypoints': kpt,
           'center': all_boxes[idx][0:2],
@@ -440,11 +439,8 @@ class COCODataset(JointsDataset):
     return cat_results
 
   def _do_python_keypoint_eval(self, res_file, res_folder):
-    print("dshgjdhfg the res file")
-    print("coco ecal testing")
+
     coco_dt = self.coco.loadRes(res_file)
-    print(coco_dt)
-    print(self.coco)
     coco_eval = COCOeval(self.coco, coco_dt, 'keypoints')
     coco_eval.params.useSegm = None
     coco_eval.evaluate()
