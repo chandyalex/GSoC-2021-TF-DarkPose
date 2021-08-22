@@ -5,25 +5,15 @@ Dark Pose implementation Tensorflow
 
 This project is done as the part of google smmer of code 2021 
 
+[GSOC 2021 project link](https://summerofcode.withgoogle.com/projects/#6367695945072640)
+
 ## Mentors
 
 * Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
 *  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
 
 
-[GSOC 2021 project link](https://summerofcode.withgoogle.com/projects/#6367695945072640)
-
-Link to TF Model Garden GitHub issue: https://github.com/tensorflow/models/issues/8713 \
-Link to paper: [![Paper](http://img.shields.io/badge/Paper-arXiv.1804.02767-B3181B?logo=arXiv)](https://arxiv.org/abs/1910.06278)
-
-
-
-
-<img align="center" src="assets/GSoC-icon-192.png"> </img>
-
-<img align="right" height="50%" width="45%" src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png"> </img> 
-
-
+<img src="assets/GSoC-icon-192.png" width="150"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="227"/> 
 
 ### Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
@@ -34,7 +24,7 @@ Coordinate Representation for Human Pose Estimation mainly focused on the key ro
 of heat map in identifying the key points of human pose estimation. This work has great
 potential in deep learning domain and could be able to produce revolutionising future works
 like YOLO  did in the past few years. That’s the main reason why tensor flow community need
-This model is implemented in TensorFlow 2 and makes it available for the open source community.This can be used for research purpose and industry in the future and has a greater potential for producing state of the art deep learning models using TensorFlow.
+This approach is implemented in TensorFlow 2 as the part of GSoC-2021 and available for the open source community.This can be used for research purpose and industry in the future and has a greater potential for producing state of the art deep learning models using TensorFlow.
 
 ### Project status
 
