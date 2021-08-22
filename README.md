@@ -49,9 +49,9 @@ This model is implemented in TensorFlow 2 and makes it available for the open so
 - [ ]  Hour glass model
 - [ ]  HR Net
 - [ ]  Training with pre-trained model
-- [ ]  Proper configuration
-- [ ]  Detailed Read me
-- [ ]  Coding standard check
+- [x]  Proper configuration
+- [x]  Detailed Read me
+- [x]  Coding standard check
 - [ ]  Launch
 
 ### Requirements
@@ -65,9 +65,18 @@ Anaconda 3.8
 # How to set up repository
 
 ```
-$ git clone link
+$ git clone https://github.com/chandyalex/GSoC-2021-TF-DarkPose
 $ cd Darkpose_Tensorflow
 $ pip install -r requirements.txt
+
+```
+Also install coco api using following command
+```
+git clone https://github.com/cocodataset/cocoapi.git
+
+cd cocoapi/PythonAPI/
+
+python setup.py install
 
 ```
 After intalling all dendencies go to $REPO/lib
@@ -75,6 +84,9 @@ and run
 ```
 make
 ```
+To make nms libraries.
+
+Please note that nms library for TPU is still under development and you can find at the branch 'tpu-dark'
 #### Data set Download
 
 Download COCO dataset from here: https://cocodataset.org/#download
@@ -94,7 +106,18 @@ ${POSE_ROOT}/data/coco
 
 #### Config file
 
-To adjust Training rameters try to tweek following file
+To adjust Training parameters try to tweek the yaml file in /experiments folder
+
+```
+export CONFIG=../experiments/coco/resnet/res50_128x96_d256x3_adam_lr1e-3.yaml
+
+export DATA_DIR="${POSE_ROOT}/data/coco"
+export OUTPUT_DIR='home://repository/out"/'
+export LOG_DIR='home://repository/log'
+export ROOT="${POSE_ROOT}/data/coco"
+export TEST_SET="val"
+export TRAIN_SET="train"
+```
 
 #### Train model
 
@@ -134,14 +157,11 @@ for i in range(epoch):
 
 ### Results
 
-| Model  | Accuracy | Download link|Colab note to train |
-| ------------- | ------------- |-------------|-------------|
-| SimpleBaseline-R50  |  | ||
-| **SimpleBaseline-R50 + DARK**  | | ||
-| SimpleBaseline-R101  |  | ||
-| **SimpleBaseline-R101 + DARK** |  | ||
-| SimpleBaseline-R152 |  | ||
-| **SimpleBaseline-R152 + DARK** |  | ||
+| Model  | Config name |
+| ------------- | ------------- |
+| **SimpleBaseline-R50 + DARK**  | `res50_128x96_d256x3_adam_lr1e-3.yaml` | 
+| **SimpleBaseline-R101 + DARK** | `res101_128x96_d256x3_adam_lr1e-3.yaml` | 
+| **SimpleBaseline-R152 + DARK** | `res152_128x96_d256x3_adam_lr1e-3.yaml` | 
 
 
 
