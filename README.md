@@ -12,8 +12,9 @@ This project is done as the part of google smmer of code 2021
 * Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
 *  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
 
-
-<img src="assets/GSoC-icon-192.png" width="150"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="227"/> 
+<p align="center">
+<img src="assets/GSoC-icon-192.png" width="200"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="300"/> 
+</p>
 
 ### Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
