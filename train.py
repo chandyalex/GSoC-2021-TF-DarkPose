@@ -106,14 +106,14 @@ def main():
 
   for epoch in range(begin_epoch, cfg.TRAIN.END_EPOCH):
 
-    train(cfg, train_dataset, model, criterion, optimizer, epoch, final_output_dir, tb_log_dir)
+    # train(cfg, train_dataset, model, criterion, optimizer, 
+    #         epoch, final_output_dir, tb_log_dir)
     # evaluate on validation set
     
     perf_indicator = validate(
         cfg, valid_dataset, model, criterion,
         final_output_dir, tb_log_dir)
 
-    print(perf_indicator)
 
     if perf_indicator >= best_perf:
       best_perf = perf_indicator

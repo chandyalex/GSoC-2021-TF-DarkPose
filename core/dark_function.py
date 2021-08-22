@@ -112,6 +112,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
   
   filenames = []
   imgnums = []
+  image_path = []
   idx = 0
   end = time.time()
   for i, (input, target, target_weight, meta) in enumerate(val_loader):
@@ -163,7 +164,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
       s = []
       score = []
       meta_ = []
-      image_path = []
+      
    
 
       for batch_id in range(input.shape[0]):

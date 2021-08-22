@@ -22,9 +22,9 @@ from yacs.config import CfgNode as CN
 
 _C = CN()
 
-_C.OUTPUT_DIR = ''
-_C.LOG_DIR = ''
-_C.DATA_DIR = ''
+_C.OUTPUT_DIR = '/home/chandy/out/'
+_C.LOG_DIR = '/home/chandy/log/'
+_C.DATA_DIR = '/home/chandy/coco_data/data/coco/'
 _C.GPUS = (0,)
 _C.WORKERS = 4
 _C.PRINT_FREQ = 500
@@ -46,8 +46,8 @@ _C.MODEL.PRETRAINED = ''
 _C.MODEL.NUM_JOINTS = 17
 _C.MODEL.TAG_PER_JOINT = True
 _C.MODEL.TARGET_TYPE = 'gaussian'
-_C.MODEL.IMAGE_SIZE = [256, 256]  # width * height, ex: 192 * 256
-_C.MODEL.HEATMAP_SIZE = [64, 64]  # width * height, ex: 24 * 32
+_C.MODEL.IMAGE_SIZE = [96, 128]  # width * height, ex: 192 * 256
+_C.MODEL.HEATMAP_SIZE = [24, 32]  # width * height, ex: 24 * 32
 _C.MODEL.SIGMA = 2
 _C.MODEL.EXTRA = CN(new_allowed=True)
 
@@ -74,7 +74,7 @@ _C.DATASET = CN()
 _C.DATASET.ROOT = '/home/chandy/coco_data/data/coco/'
 _C.DATASET.DATASET = 'coco'
 _C.DATASET.TRAIN_SET = 'train'
-_C.DATASET.TEST_SET = 'valid'
+_C.DATASET.TEST_SET = 'val'
 _C.DATASET.DATA_FORMAT = 'jpg'
 _C.DATASET.HYBRID_JOINTS_TYPE = ''
 _C.DATASET.SELECT_DATA = False
@@ -107,20 +107,20 @@ _C.TRAIN.END_EPOCH = 140
 _C.TRAIN.RESUME = False
 _C.TRAIN.CHECKPOINT = ''
 
-_C.TRAIN.BATCH_SIZE_PER_GPU = 8
+_C.TRAIN.BATCH_SIZE_PER_GPU = 32
 _C.TRAIN.SHUFFLE = True
 
 # testing
 _C.TEST = CN()
 
 # size of images for each device
-_C.TEST.BATCH_SIZE_PER_GPU = 8
+_C.TEST.BATCH_SIZE_PER_GPU = 64
 # Test Model Epoch
-_C.TEST.FLIP_TEST = False
+_C.TEST.FLIP_TEST = True
 _C.TEST.POST_PROCESS = False
 _C.TEST.BLUR_KERNEL = 11
 
-_C.TEST.USE_GT_BBOX = False
+_C.TEST.USE_GT_BBOX = True
 
 # nms
 _C.TEST.IMAGE_THRE = 0.1
@@ -128,7 +128,7 @@ _C.TEST.NMS_THRE = 0.6
 _C.TEST.SOFT_NMS = False
 _C.TEST.OKS_THRE = 0.5
 _C.TEST.IN_VIS_THRE = 0.0
-_C.TEST.COCO_BBOX_FILE = ''
+_C.TEST.COCO_BBOX_FILE = '/home/chandy/coco_data/data/coco/person_detection_results/COCO_val2017_detections_AP_H_56_person.json'
 _C.TEST.BBOX_THRE = 1.0
 _C.TEST.MODEL_FILE = ''
 
