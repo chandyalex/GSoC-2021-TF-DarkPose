@@ -9,3 +9,5 @@ json_tricks
 scikit-image
 yacs>=0.1.5
 tensorboardX==1.6
+tensorflow==2.5
+keras==2.5

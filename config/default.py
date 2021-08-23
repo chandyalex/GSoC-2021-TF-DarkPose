@@ -22,9 +22,9 @@ from yacs.config import CfgNode as CN
 
 _C = CN()
 
-_C.OUTPUT_DIR = '/home/chandy/out/'
-_C.LOG_DIR = '/home/chandy/log/'
-_C.DATA_DIR = '/home/chandy/coco_data/data/coco/'
+_C.OUTPUT_DIR = ''
+_C.LOG_DIR = ''
+_C.DATA_DIR = ''
 _C.GPUS = (0,)
 _C.WORKERS = 4
 _C.PRINT_FREQ = 500
@@ -71,7 +71,7 @@ _C.LOSS.USE_DIFFERENT_JOINTS_WEIGHT = False
 
 # DATASET related params
 _C.DATASET = CN()
-_C.DATASET.ROOT = '/home/chandy/coco_data/data/coco/'
+_C.DATASET.ROOT = ''
 _C.DATASET.DATASET = 'coco'
 _C.DATASET.TRAIN_SET = 'train'
 _C.DATASET.TEST_SET = 'val'
@@ -128,7 +128,7 @@ _C.TEST.NMS_THRE = 0.6
 _C.TEST.SOFT_NMS = False
 _C.TEST.OKS_THRE = 0.5
 _C.TEST.IN_VIS_THRE = 0.0
-_C.TEST.COCO_BBOX_FILE = '/home/chandy/coco_data/data/coco/person_detection_results/COCO_val2017_detections_AP_H_56_person.json'
+_C.TEST.COCO_BBOX_FILE = '/coco/person_detection_results/COCO_val2017_detections_AP_H_56_person.json'
 _C.TEST.BBOX_THRE = 1.0
 _C.TEST.MODEL_FILE = ''
 
@@ -142,36 +142,36 @@ _C.DEBUG.SAVE_HEATMAPS_PRED = False
 
 
 def update_config(cfg, args):
-    cfg.defrost()
-    cfg.merge_from_file(args.cfg)
-    cfg.merge_from_list(args.opts)
+  cfg.defrost()
+  cfg.merge_from_file(args.cfg)
+  cfg.merge_from_list(args.opts)
 
-    if args.modelDir:
-        cfg.OUTPUT_DIR = args.modelDir
+  if args.modelDir:
+    cfg.OUTPUT_DIR = args.modelDir
 
-    if args.logDir:
-        cfg.LOG_DIR = args.logDir
+  if args.logDir:
+    cfg.LOG_DIR = args.logDir
 
-    if args.dataDir:
-        cfg.DATA_DIR = args.dataDir
+  if args.dataDir:
+    cfg.DATA_DIR = args.dataDir
 
-    cfg.DATASET.ROOT = os.path.join(
-        cfg.DATA_DIR, cfg.DATASET.ROOT
-    )
+  cfg.DATASET.ROOT = os.path.join(
+    cfg.DATA_DIR, cfg.DATASET.ROOT
+  )
 
-    cfg.MODEL.PRETRAINED = os.path.join(
-        cfg.DATA_DIR, cfg.MODEL.PRETRAINED
-    )
+  cfg.MODEL.PRETRAINED = os.path.join(
+    cfg.DATA_DIR, cfg.MODEL.PRETRAINED
+  )
 
-    if cfg.TEST.MODEL_FILE:
-        cfg.TEST.MODEL_FILE = os.path.join(
-            cfg.DATA_DIR, cfg.TEST.MODEL_FILE
-        )
+  if cfg.TEST.MODEL_FILE:
+    cfg.TEST.MODEL_FILE = os.path.join(
+      cfg.DATA_DIR, cfg.TEST.MODEL_FILE
+      )
 
-    cfg.freeze()
+  cfg.freeze()
 
 
 if __name__ == '__main__':
-    import sys
-    with open(sys.argv[1], 'w') as f:
-        print(_C, file=f)
+  import sys
+  with open(sys.argv[1], 'w') as f:
+    print(_C, file=f)

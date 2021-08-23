@@ -54,6 +54,7 @@ def JointsMSELoss(y_true, y_pred,target_weight=None):
   if not isinstance(y_pred,np.ndarray):
       y_pred = y_pred.numpy()
       y_true = y_true.numpy()
+  elif not isinstance(target_weight,np.ndarray):
       target_weight = target_weight.numpy()
 
   batch_size = y_pred.shape[0]

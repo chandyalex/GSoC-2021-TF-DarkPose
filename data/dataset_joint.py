@@ -149,8 +149,10 @@ class JointsDataset(Sequence):
 
   def data_generation(self, list_IDs_temp):
     # Initialization
-    batch_images = np.zeros(shape=(self.batch_size, self.image_size[1], self.image_size[0], 3), dtype=np.float)
-    batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[1], self.output_size[0], 17), dtype=np.float)
+    batch_images = np.zeros(shape=(self.batch_size, self.image_size[1], 
+                      self.image_size[0], 3), dtype=np.float)
+    batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[1], 
+                      self.output_size[0], 17), dtype=np.float)
     batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float)
     batch_metainfo = []
     count = 0
@@ -239,7 +241,9 @@ class JointsDataset(Sequence):
     for i in range(self.num_joints):
       if joints_vis[i, 0] > 0.0:
         joints[i, 0:2] = affine_transform(joints[i, 0:2], trans)
-        joints_heatmap[i, 0:2] = affine_transform(joints_heatmap[i, 0:2], trans_heatmap)
+        joints_heatmap[i, 0:2] = affine_transform(
+                      joints_heatmap[i, 0:2], trans_heatmap
+                      )
 
     target, target_weight = self.generate_target(joints_heatmap, joints_vis)
 
