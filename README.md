@@ -35,8 +35,8 @@ This approach is implemented in TensorFlow 2 as the part of GSoC-2021 and availa
 - [x]  Loss function
 - [x]  Evaluation matrix
 - [x]  Dark pose implementation
-- [x]  [Training script base model](jupyter/keras_test.ipynb)
-- [x]  [Training of base model with darkpose](/jupyter/Dark_pose_training_testing.ipynb)
+- [x]  Training script base model
+- [x]  [Training of base model with darkpose](/notebooks/Dark_pose_training_testing.ipynb)   [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](/notebooks/Dark_pose_colab.ipynb)
 - [ ]  Hour glass model
 - [ ]  HR Net
 - [ ]  Training with pre-trained model
@@ -105,9 +105,9 @@ export CONFIG=../experiments/coco/resnet/res50_128x96_d256x3_adam_lr1e-3.yaml
 export DATA_DIR="${POSE_ROOT}/data/coco"
 export OUTPUT_DIR='home://repository/out"/'
 export LOG_DIR='home://repository/log'
-export ROOT="${POSE_ROOT}/data/coco"
-export TEST_SET="val"
-export TRAIN_SET="train"
+export DATASET.ROOT="${POSE_ROOT}/data/coco"
+export DATASET.TEST_SET="val2017"
+export DATASET.TRAIN_SET="train2017"
 ```
 
 #### Train model
