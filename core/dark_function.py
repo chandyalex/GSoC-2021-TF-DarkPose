@@ -189,6 +189,8 @@ def validate(config, val_loader, model, criterion, output_dir='',
       all_boxes[idx:idx + num_images, 2:4] = s[:, 0:2]
       all_boxes[idx:idx + num_images, 4] = np.prod(s*200, 1)
       all_boxes[idx:idx + num_images, 5] = score
+
+     
       
 
       # idx = idx+num_images
