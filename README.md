@@ -97,54 +97,30 @@ ${POSE_ROOT}/data/coco
 
 #### Config file
 
-To adjust Training parameters try to tweek the yaml file in /experiments folder
+1. To adjust Training parameters try to tweek the yaml file in /experiments folder
 
+2. Make sure that following variable in YAML is having correct value as given below.
+
+```
+DATA_DIR="${POSE_ROOT}/data/coco"
+OUTPUT_DIR='home://repository/out"/'
+LOG_DIR='home://repository/log'
+DATASET.ROOT="${POSE_ROOT}/data/coco"
+DATASET.TEST_SET="val2017"
+DATASET.TRAIN_SET="train2017"
+
+```
+3. Once you fininshed editing the config file export it to the terminal
 ```
 export CONFIG=../experiments/coco/resnet/res50_128x96_d256x3_adam_lr1e-3.yaml
-
-export DATA_DIR="${POSE_ROOT}/data/coco"
-export OUTPUT_DIR='home://repository/out"/'
-export LOG_DIR='home://repository/log'
-export DATASET.ROOT="${POSE_ROOT}/data/coco"
-export DATASET.TEST_SET="val2017"
-export DATASET.TRAIN_SET="train2017"
 ```
-
-#### Train model
-
-* Train the model without dark 
-```
-# load the data
-data_gen = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET.TRAIN_SET, True)
-
-# initialize model
-model= pose_resnet.get_pose_net(cfg, is_train=True)
-model.build(input_shape=(None,256, 256, 3))
-model.compile(loss=JointsMSELoss, optimizer='SGD',run_eagerly=True,metrics=accuracy)
-model.summary()
-
-# train
-model.fit(data_gen,epochs=2)
-```
-* Train the model with dark \
-The dark method is implemented in the core library 
-It can be aceesd [here](lib/core/dark_function.py)
-
-
+# Training
+4. Then pass the config variable to training script to train the model.
 
 ```
-from core.dark_function import train,validate
-
-data_gen = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET TRAIN_SET, True)
-# Initialize model
-model= pose_resnet.get_pose_net(cfg, is_train=True)
-# Initilize optimizer
-optimizer = get_optimizer(cfg, model)
-#Start training uisng the loop method
-epoch=2
-for i in range(epoch):
-    train(cfg,data_gen,model,JointsMSELoss,optimizer,i)
+python train.py --cfg $CONFIG
 ```
+
 
 ### Results
 
