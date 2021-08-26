@@ -1,4 +1,3 @@
-DISCLAIMER: this Darkpose Tensorflow implementation is still under development. No support will be provided during the development phase.
 
 # Darkpose Tensorflow
 Dark Pose implementation Tensorflow
@@ -9,11 +8,16 @@ This project is done as the part of google smmer of code 2021
 
 ## Mentors
 
-* Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
 *  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
 
+* Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
+
+## Maintainer
+
+* Chandykunju Alex ([@GitHub chandyalex](https://github.com/chandyalex))
+
 <p align="center">
-<img src="assets/GSoC-icon-192.png" width="200"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="300"/> 
+<img src="assets/GSoC-icon-192.png" width="110"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="150"/> 
 </p>
 
 ### Objective
@@ -161,7 +165,4 @@ If you use our code or models in your research, please cite with:
 }
 
 ```
-## Authors or Maintainers
-
-* Chandykunju Alex ([@GitHub chandyalex](https://github.com/chandyalex))
-
+DISCLAIMER: this Darkpose Tensorflow implementation is still under development. No support will be provided during the development phase.
