@@ -157,7 +157,7 @@ python train.py --cfg $CONFIG
 ```
 
 ##  How to integrate your own pose estimation model
-A detailed demonstartion of how to train the pose estimation model with DARK method is demonstarted in the following colab and jupyter notbook.
+A detailed demonstartion of how to train the pose estimation model with DARK method is demonstarted in the following colab and jupyter notebook.
 
 * [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chandyalex/GSoC-2021-TF-DarkPose/blob/main/notebooks/Dark_pose_colab.ipynb)
 
@@ -174,7 +174,7 @@ A detailed demonstartion of how to train the pose estimation model with DARK met
 
 
 
-## References
+
 
 ## Citation
 If you use our code or models in your research, please cite with:
