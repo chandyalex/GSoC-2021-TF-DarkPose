@@ -6,14 +6,14 @@ This project is done as the part of google smmer of code 2021
 
 [GSOC 2021 project link](https://summerofcode.withgoogle.com/projects/#6367695945072640)
 
-Moreover it is solving the issue created in the tensorflow Models repository
+The issue created in the tensorflow Models repository is given below:
 
 https://github.com/tensorflow/models/issues/8713
 
 
 ## Mentors
 
-*  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
+*  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz) ( Main Project mentor)
 
 * Jaeyoun Kim [@Github jaeyounkim](https://github.com/jaeyounkim)
 
