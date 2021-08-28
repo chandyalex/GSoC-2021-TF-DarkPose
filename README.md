@@ -76,6 +76,8 @@ This approach is implemented in TensorFlow 2 as the part of GSoC-2021 and availa
 5. Create and merge PR to the model garden. ← Not yet implemented
 
 6. Publish model to TF Hub ← Not yet implemented
+
+
 The tensorflow comminity developers are more than welcome to implement Hourglass, HRnet and other pose estimation models to integrate with DARK model.
 
 ### Requirements
