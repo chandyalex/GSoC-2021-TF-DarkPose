@@ -156,7 +156,7 @@ export CONFIG=../experiments/coco/resnet/res50_128x96_d256x3_adam_lr1e-3.yaml
 python train.py --cfg $CONFIG
 ```
 
-##  How to integrate your own pase estimation model
+##  How to integrate your own pose estimation model
 A detailed demonstartion of how to train the pose estimation model with DARK method is demonstarted in the following colab and jupyter notbook.
 * Colab Notebook \
  [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](/notebooks/Dark_pose_colab.ipynb)
