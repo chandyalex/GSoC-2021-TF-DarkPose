@@ -6,6 +6,11 @@ This project is done as the part of google smmer of code 2021
 
 [GSOC 2021 project link](https://summerofcode.withgoogle.com/projects/#6367695945072640)
 
+Moreover it is solving the issue created in the tensorflow Models repository
+
+https://github.com/tensorflow/models/issues/8713
+
+
 ## Mentors
 
 *  Margaret Maynard-Reid [@Github margaretmz](https://github.com/margaretmz)
@@ -20,7 +25,7 @@ This project is done as the part of google smmer of code 2021
 <img src="assets/GSoC-icon-192.png" width="110"/> <img src="assets/TensorFlow_Brand/TensorFlow_Logo/Primary/PNG/TF_FullColor_Stacked.png" width="150"/> 
 </p>
 
-### Objective
+## Objective
 Accurate coordinate representation in human pose estimation is big challenging problem
 in computer vision, various deep learning methods are used to solve this problem and the
 heat map plays a key role in the performance and accuracy of the model. However the key
@@ -31,8 +36,11 @@ potential in deep learning domain and could be able to produce revolutionising f
 like YOLO  did in the past few years. That’s the main reason why tensor flow community need
 This approach is implemented in TensorFlow 2 as the part of GSoC-2021 and available for the open source community.This can be used for research purpose and industry in the future and has a greater potential for producing state of the art deep learning models using TensorFlow.
 
-### Project status
 
+
+## Project 
+
+#### Completed tasks
 - [x]  Data preparation
 - [x]  Data generator
 - [x]  Base line model
@@ -40,19 +48,40 @@ This approach is implemented in TensorFlow 2 as the part of GSoC-2021 and availa
 - [x]  Evaluation matrix
 - [x]  Dark pose implementation
 - [x]  Training script base model
-- [x]  [Training of base model with darkpose](/notebooks/Dark_pose_training_testing.ipynb)   [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](/notebooks/Dark_pose_colab.ipynb)
-- [ ]  Hour glass model
-- [ ]  HR Net
-- [ ]  Training with pre-trained model
+- [x]  Training of base model with darkpose
 - [x]  Proper configuration
 - [x]  Detailed Read me
 - [x]  Coding standard check
+#### Remaining task
+- [ ]  Produce results mentioned in the paper
+- [ ]  Hour glass model
+- [ ]  HR Net
+- [ ]  Training with pre-trained model
+- [ ]  Create PR to model garden
+- [ ]  Publish model to TF hub
 - [ ]  Launch
 
+### Detailed project status
+
+1. The paper has 3 models that integrates with DARK model for pose estimation 
+    * Baseline ← Training is done still trying to fine-tune to produce the result in paper. 
+    * Hourglass ← Not yet implemented
+    * HRnet ← Not yet implemented
+2. Implement DARK model - Done
+
+3. Integrate DARK pose with baseline -Done
+
+4. Data generator - Done
+
+5. Create and merge PR to the model garden. ← Not yet implemented
+
+6. Publish model to TF Hub ← Not yet implemented
+The tensorflow comminity developers are more than welcome to implement Hourglass, HRnet and other pose estimation models to integrate with DARK model.
+
 ### Requirements
-The resitory tested with \
-Tensorflow 2.5 \
-Anaconda 3.8
+The resitory tested with 
+- Tensorflow 2.5 
+- Anaconda 3.7
 
 
 
@@ -125,6 +154,12 @@ export CONFIG=../experiments/coco/resnet/res50_128x96_d256x3_adam_lr1e-3.yaml
 python train.py --cfg $CONFIG
 ```
 
+##  How to integrate your own pase estimation model
+A detailed demonstartion of how to train the pose estimation model with DARK method is demonstarted in the following colab and jupyter notbook.
+* Colab Notebook \
+ [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](/notebooks/Dark_pose_colab.ipynb)
+
+* [Jupyter Notebook](/notebooks/Dark_pose_training_testing.ipynb)  
 
 ### Results
 
