@@ -35,22 +35,23 @@ def get_max_preds(batch_heatmaps):
   batch_size = batch_heatmaps.shape[0]
   num_joints = batch_heatmaps.shape[3]
   width = batch_heatmaps.shape[1]
-  heatmaps_reshaped = tf.reshape(batch_heatmaps,(batch_size, num_joints, -1))
-  idx = tf.math.argmax(heatmaps_reshaped, 2)
-  maxvals = tf.math.reduce_max(heatmaps_reshaped, 2)
+  heatmaps_reshaped = batch_heatmaps.reshape(batch_size, num_joints, -1)
+  
+  idx = np.argmax(heatmaps_reshaped, 2)
+  maxvals = np.amax(heatmaps_reshaped, 2)
 
-  maxvals = tf.reshape(maxvals,(batch_size, num_joints, 1))
-  idx = tf.reshape(idx,(batch_size, num_joints, 1))
+  maxvals = maxvals.reshape((batch_size, num_joints, 1))
+  idx = idx.reshape((batch_size, num_joints, 1))
 
-  preds = tf.Variable(tf.cast(tf.tile(idx, (1, 1, 2)),tf.float32))
-  # preds=tf.cast(preds, tf.float32)
+  preds = np.tile(idx, (1, 1, 2)).astype(np.float32)
 
-  preds = preds[:, :, 0].assign(tf.math.floormod(preds[:, :, 0], width))
-  preds = preds[:, :, 1].assign(tf.math.floor((preds[:, :, 1]) / width))
+  preds[:, :, 0] = (preds[:, :, 0]) % width
+  preds[:, :, 1] = np.floor((preds[:, :, 1]) / width)
 
-  pred_mask = tf.tile(tf.math.greater(maxvals, 0.0),(1, 1, 2))
-  pred_mask = tf.cast(pred_mask ,tf.float32)
-  preds_new = tf.math.multiply(preds,pred_mask)
+  pred_mask = np.tile(np.greater(maxvals, 0.0), (1, 1, 2))
+  pred_mask = pred_mask.astype(np.float32)
+
+  preds *= pred_mask
 
   return preds, maxvals
 

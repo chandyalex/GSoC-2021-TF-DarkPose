@@ -99,7 +99,7 @@ def main():
   optimizer = get_optimizer(cfg, model)
   criterion = JointsMSELoss
 
-  model.compile(optimizer, criterion)
+  model.compile(optimizer, criterion,run_eagerly=True)
 
   best_perf = 0.0
   best_model = False
