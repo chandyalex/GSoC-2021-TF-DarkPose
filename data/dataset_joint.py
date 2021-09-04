@@ -155,20 +155,29 @@ class JointsDataset(Sequence):
     batch_heatmaps = np.zeros(shape=(self.batch_size,self.output_size[1], 
                       self.output_size[0], 17), dtype=np.float)
     batch_weights= np.zeros(shape=(self.batch_size,17,1), dtype=np.float)
-    batch_metainfo = []
+
     count = 0
+    batch_metainfo= {"image":[],"filename":[],"imgnum":[],"joints":[],"joints_vis":[],"center":[],"scale":[],'rotation':[],'score':[]}
 
     for i in list_IDs_temp:
       X_temp,target_temp,target_weight_temp, meta_temp=self.load_single_batch(i)
       
       if X_temp is None:
         continue
-
+ 
       index = count % self.batch_size
       batch_images[index, :, :, :] = np.array(X_temp,'float32')
       batch_heatmaps[index, :, :, :] = np.array(target_temp,'float32')
       batch_weights[index, :, :] = np.array(target_weight_temp,'float32')
-      batch_metainfo.append(meta_temp)
+      batch_metainfo['image'].append(meta_temp['image'])
+      batch_metainfo['filename'].append(meta_temp['filename'])
+      batch_metainfo['imgnum'].append(meta_temp['imgnum'])
+      batch_metainfo['joints'].append(meta_temp['joints'])
+      batch_metainfo['joints_vis'].append(meta_temp['joints_vis'])
+      batch_metainfo['center'].append(meta_temp['center'])
+      batch_metainfo['scale'].append(meta_temp['scale'])
+      batch_metainfo['rotation'].append(meta_temp['rotation'])
+      batch_metainfo['score'].append(meta_temp['score'])
       count = count + 1
 
     return batch_images, batch_heatmaps, batch_weights,batch_metainfo

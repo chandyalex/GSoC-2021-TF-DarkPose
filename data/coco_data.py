@@ -68,7 +68,7 @@ class DataGenerator(Sequence):
     # Initialization
     # Generate data
     for i in enumerate(list_IDs_temp):
-      images, target, target_weights,meta=self.data[list_IDs_temp]
+      images, target, target_weights,meta=self.coco[list_IDs_temp]
     return images, target, target_weights,meta
 
   def _get_ann_file_keypoint(self):

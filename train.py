@@ -11,8 +11,9 @@ from config import cfg
 from config import update_config
 from utils.utils import create_logger
 
-
+import numpy as np
 import tensorflow as tf
+
 import models
 from data import coco
 from data import coco_data
@@ -20,6 +21,7 @@ from core.loss import JointsMSELoss, JointsOHKMMSELoss, dice_loss
 from models import pose_resnet
 from core.evaluation import accuracy
 from utils.utils import get_optimizer
+
 
 
 from core.dark_function import train, validate
@@ -78,13 +80,20 @@ def main():
 
   valid_dataset = coco.COCODataset(cfg, cfg.DATASET.ROOT, cfg.DATASET.TEST_SET, False)
 
-  input, target, target_weight, meta = train_dataset[0]
+  print(len(valid_dataset))
+  print("validation datat set length")
+
+  dump_input = np.random.rand(
+                1, cfg.MODEL.IMAGE_SIZE[1], cfg.MODEL.IMAGE_SIZE[0],3
+                )
+    
+
 
   model = eval('models.'+cfg.MODEL.NAME+'.get_pose_net')(
       cfg, is_train=True
   )
 
-  model.build(input_shape=input.shape)
+  model.build(input_shape=dump_input.shape)
 
   # define loss function (criterion) and optimizer
   optimizer = get_optimizer(cfg, model)

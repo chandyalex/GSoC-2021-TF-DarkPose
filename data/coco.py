@@ -300,6 +300,7 @@ class COCODataset(JointsDataset):
                 *args, **kwargs):
     rank = cfg.RANK
 
+
     res_folder = os.path.join(output_dir, 'results')
     if not os.path.exists(res_folder):
       try:
@@ -315,13 +316,14 @@ class COCODataset(JointsDataset):
     # person x (keypoints)
     _kpts = []
     for idx, kpt in enumerate(preds):
+
       _kpts.append({
           'keypoints': kpt,
           'center': all_boxes[idx][0:2],
           'scale': all_boxes[idx][2:4],
           'area': all_boxes[idx][4],
           'score': all_boxes[idx][5],
-          'image': int(float(img_path[idx][-16:-4]))
+          'image': int(img_path[idx][-16:-4])
       })
     # image x person x (keypoints)
     kpts = defaultdict(list)

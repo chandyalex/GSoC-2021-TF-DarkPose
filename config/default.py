@@ -46,7 +46,7 @@ _C.MODEL.PRETRAINED = ''
 _C.MODEL.NUM_JOINTS = 17
 _C.MODEL.TAG_PER_JOINT = True
 _C.MODEL.TARGET_TYPE = 'gaussian'
-_C.MODEL.IMAGE_SIZE = [96, 128]  # width * height, ex: 192 * 256
+_C.MODEL.IMAGE_SIZE = [192, 256]  # width * height, ex: 192 * 256
 _C.MODEL.HEATMAP_SIZE = [24, 32]  # width * height, ex: 24 * 32
 _C.MODEL.SIGMA = 2
 _C.MODEL.EXTRA = CN(new_allowed=True)
@@ -120,7 +120,7 @@ _C.TEST.FLIP_TEST = True
 _C.TEST.POST_PROCESS = False
 _C.TEST.BLUR_KERNEL = 11
 
-_C.TEST.USE_GT_BBOX = True
+_C.TEST.USE_GT_BBOX = False
 
 # nms
 _C.TEST.IMAGE_THRE = 0.1

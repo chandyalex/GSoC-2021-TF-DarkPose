@@ -103,7 +103,9 @@ def validate(config, val_loader, model, criterion, output_dir='',
   losses = AverageMeter()
   acc = AverageMeter()
 
-  num_samples = config.TRAIN.BATCH_SIZE_PER_GPU
+  print(len(val_loader))
+
+  num_samples = 4992
   all_preds = np.zeros(
       (num_samples, config.MODEL.NUM_JOINTS, 3),
       dtype=np.float32
@@ -114,8 +116,13 @@ def validate(config, val_loader, model, criterion, output_dir='',
   imgnums = []
   image_path = []
   idx = 0
+  c = []
+  s = []
+  score = []
   end = time.time()
+  
   for i, (input, target, target_weight, meta) in enumerate(val_loader):
+ 
     outputs = model(input, training=False)
     output = outputs.numpy()
     if isinstance(outputs, list):
@@ -145,70 +152,78 @@ def validate(config, val_loader, model, criterion, output_dir='',
 
       output = (output + output_flipped) * 0.5
 
-      loss = criterion(output, target, target_weight)
+    loss = criterion(output, target, target_weight)
 
-      loss = loss.numpy()
+    loss = loss.numpy()
 
-      num_images = input.shape[0]
-      # measure accuracy and record loss
-      losses.update(loss.item(), num_images)
-      _, avg_acc, cnt, pred = accuracy(output, target)
+    num_images = input.shape[0]
+    # measure accuracy and record loss
+    losses.update(loss.item(), num_images)
+    _, avg_acc, cnt, pred = accuracy(output, target)
 
-      acc.update(avg_acc, cnt)
+    acc.update(avg_acc, cnt)
 
-      # measure elapsed time
-      batch_time.update(time.time() - end)
-      end = time.time()
+    # measure elapsed time
+    batch_time.update(time.time() - end)
+    end = time.time()
+    
 
-      c = []
-      s = []
-      score = []
-      meta_ = []
-      
-   
-
-      for batch_id in range(input.shape[0]):
-        c.append(meta[batch_id]['center'])
-        s.append(meta[batch_id]['scale'])
-        score.append(meta[batch_id]['score'])
-        image_path.append(meta[batch_id]['image'])
-
+    
   
 
-      c = np.array(c)
-      s = np.array(s)
+    c = meta['center']
+    s = meta['scale']
+    score = meta['score']
+    
+    
+  
 
- 
+    # for batch_id in range(input.shape[0]):
+    #   # c.append(meta[batch_id]['center'])
+    #   # s.append(meta[batch_id]['scale'])
+    #   # score.append(meta[batch_id]['score'])
+    #   image_path.append(meta[batch_id]['image'])
+    # batch_id=batch_id+input.shape[0]
 
-      preds, maxvals = get_final_preds(config, output, c, s)
 
-      all_preds[idx:idx + num_images, :, 0:2] = preds[:, :, 0:2]
-      all_preds[idx:idx + num_images, :, 2:3] = maxvals
-      # double check this all_boxes parts
-      all_boxes[idx:idx + num_images, 0:2] = c[:, 0:2]
-      all_boxes[idx:idx + num_images, 2:4] = s[:, 0:2]
-      all_boxes[idx:idx + num_images, 4] = np.prod(s*200, 1)
-      all_boxes[idx:idx + num_images, 5] = score
 
-     
-      
+    c = np.array(c)
+    s = np.array(s)
+    score = np.array(score)
 
-      # idx = idx+num_images
 
-      if i % config.PRINT_FREQ == 0:
-        msg = 'Test: [{0}/{1}]\t' \
-              'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
-              'Loss {loss.val:.4f} ({loss.avg:.4f})\t' \
-              'Accuracy {acc.val:.3f} ({acc.avg:.3f})'.format(
-                  i, len(val_loader), batch_time=batch_time,
-                  loss=losses, acc=acc)
-        logger.info(msg)
-        print(msg)
 
-        # prefix = '{}_{}'.format(
-        #     os.path.join(output_dir, 'val'), i
+    preds, maxvals = get_final_preds(config, output, c, s)
 
-        # )
+    all_preds[idx:idx + num_images, :, 0:2] = preds[:, :, 0:2]
+    all_preds[idx:idx + num_images, :, 2:3] = maxvals
+    # double check this all_boxes parts
+    all_boxes[idx:idx + num_images, 0:2] = c[:, 0:2]
+    all_boxes[idx:idx + num_images, 2:4] = s[:, 0:2]
+    all_boxes[idx:idx + num_images, 4] = np.prod(s*200, 1)
+    all_boxes[idx:idx + num_images, 5] = score
+    image_path.extend(meta['image'])
+    # image_path.append(meta['filename'])
+
+
+    # idx += idx
+    # idx = idx+num_images
+
+    if i % config.PRINT_FREQ == 0:
+      msg = 'Test: [{0}/{1}]\t' \
+            'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
+            'Loss {loss.val:.4f} ({loss.avg:.4f})\t' \
+            'Accuracy {acc.val:.3f} ({acc.avg:.3f})'.format(
+                i, len(val_loader), batch_time=batch_time,
+                loss=losses, acc=acc)
+      logger.info(msg)
+      print(msg)
+
+      # prefix = '{}_{}'.format(
+      #     os.path.join(output_dir, 'val'), i
+
+      # )
+  print(all_boxes.shape)    
   name_values, perf_indicator = val_loader.evaluate(
       config, all_preds, output_dir, all_boxes, image_path,
       filenames, imgnums

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -74,28 +75,26 @@ def accuracy(output, target, hm_type='gaussian', thr=0.5):
   idx = list(range(output.shape[3]))
   norm = 1.0
   if hm_type == 'gaussian':
-    pred, _ = get_max_preds(output)
-    target, _ = get_max_preds(target)
-    h = output.shape[1]
-    w = output.shape[2]
-    norm = tf.math.multiply(
-        tf.ones([pred.shape[0], 2]), tf.Variable([h, w], dtype=np.float32)) / 10
+      pred, _ = get_max_preds(output)
+      target, _ = get_max_preds(target)
+      h = output.shape[1]
+      w = output.shape[2]
+      norm = np.ones((pred.shape[0], 2)) * np.array([h, w]) / 10
   dists = calc_dists(pred, target, norm)
 
-  acc = tf.Variable(tf.zeros([len(idx)]))
+  acc = np.zeros((len(idx) + 1))
   avg_acc = 0
   cnt = 0
 
-
   for i in range(len(idx)):
-    acc = acc[i].assign(dist_acc(dists[idx[i]]))
-    if acc[i] >= 0:
-      avg_acc = avg_acc + acc[i]
-      cnt += 1
+      acc[i + 1] = dist_acc(dists[idx[i]])
+      if acc[i + 1] >= 0:
+          avg_acc = avg_acc + acc[i + 1]
+          cnt += 1
 
   avg_acc = avg_acc / cnt if cnt != 0 else 0
   if cnt != 0:
-    acc = acc[0].assign(avg_acc)
+      acc[0] = avg_acc
 
 
   return acc, avg_acc, cnt, pred
