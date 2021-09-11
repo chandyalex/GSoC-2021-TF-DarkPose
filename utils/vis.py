@@ -18,7 +18,7 @@ from __future__ import print_function
 import math
 
 import numpy as np
-import torchvision
+
 import cv2
 
 from core.inference import get_max_preds

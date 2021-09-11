@@ -30,6 +30,7 @@ from core.inference_dark import get_final_preds
 
 
 
+
 logger = logging.getLogger(__name__)
 
 def train(config, train_loader, model, criterion, optimizer, epoch,
@@ -59,6 +60,7 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
       outputs = model(input, training=True)  # Logits for this minibatch
       # Compute the loss value for this minibatch.
       if isinstance(outputs, list):
+        print("output is list")
         loss = criterion(outputs[0], target, target_weight)
         for output in outputs[1:]:
           loss += criterion(output, target, target_weight)
@@ -96,6 +98,8 @@ def train(config, train_loader, model, criterion, optimizer, epoch,
                 data_time=data_time, loss=losses, acc=acc)
       print(msg)
 
+     
+
 def validate(config, val_loader, model, criterion, output_dir='',
              tb_log_dir='', writer_dict=None):
 
@@ -122,7 +126,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
   end = time.time()
   
   for i, (input, target, target_weight, meta) in enumerate(val_loader):
- 
+
     outputs = model(input, training=False)
     output = outputs.numpy()
     if isinstance(outputs, list):
@@ -130,6 +134,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
     else:
       output = outputs
     output = output.numpy()
+
 
 
     if config.TEST.FLIP_TEST:
@@ -194,6 +199,7 @@ def validate(config, val_loader, model, criterion, output_dir='',
 
 
     preds, maxvals = get_final_preds(config, output, c, s)
+    
 
     all_preds[idx:idx + num_images, :, 0:2] = preds[:, :, 0:2]
     all_preds[idx:idx + num_images, :, 2:3] = maxvals

@@ -22,40 +22,27 @@ from core.inference_dark import get_max_preds
 
 
 def calc_dists(preds, target, normalize):
-
-  preds = tf.cast(preds, np.float32)
-  target = tf.cast(target, np.float32)
-  dist = tf.Variable(tf.zeros([preds.shape[1], preds.shape[0]]), np.float32)
- 
+  preds = preds.astype(np.float32)
+  target = target.astype(np.float32)
+  dists = np.zeros((preds.shape[1], preds.shape[0]))
   for n in range(preds.shape[0]):
     for c in range(preds.shape[1]):
-      indices = [c, n]
       if target[n, c, 0] > 1 and target[n, c, 1] > 1:
         normed_preds = preds[n, c, :] / normalize[n]
         normed_targets = target[n, c, :] / normalize[n]
-        norm_values, norm_values1 = tf.linalg.normalize(
-            tf.math.subtract(normed_preds, normed_targets)
-            )
-        dist = dist[c, n].assign(norm_values[0])
-
+        dists[c, n] = np.linalg.norm(normed_preds - normed_targets)
       else:
-
-        dist = dist[c, n].assign(-1)
-
-  return dist
+        dists[c, n] = -1
+  return dists
 
 
 def dist_acc(dists, thr=0.5):
   ''' Return percentage below threshold while ignoring values with a -1 '''
 
-  dist_cal = tf.math.not_equal(dists, -1)
-  thr = tf.constant(thr, np.float32)
-
-  num_dist_cal = tf.math.reduce_sum(tf.cast(dist_cal, tf.float32))
+  dist_cal = np.not_equal(dists, -1)
+  num_dist_cal = dist_cal.sum()
   if num_dist_cal > 0:
-    less = tf.math.less(dists[dist_cal], thr)
-    reduce_less = tf.math.reduce_sum(tf.cast(less, tf.float32))
-    return reduce_less* 1.0 / num_dist_cal
+    return np.less(dists[dist_cal], thr).sum() * 1.0 / num_dist_cal
   else:
     return -1
 
@@ -75,11 +62,11 @@ def accuracy(output, target, hm_type='gaussian', thr=0.5):
   idx = list(range(output.shape[3]))
   norm = 1.0
   if hm_type == 'gaussian':
-      pred, _ = get_max_preds(output)
-      target, _ = get_max_preds(target)
-      h = output.shape[1]
-      w = output.shape[2]
-      norm = np.ones((pred.shape[0], 2)) * np.array([h, w]) / 10
+    pred, _ = get_max_preds(output)
+    target, _ = get_max_preds(target)
+    h = output.shape[2]
+    w = output.shape[1]
+    norm = np.ones((pred.shape[0], 2)) * np.array([h, w]) / 10
   dists = calc_dists(pred, target, norm)
 
   acc = np.zeros((len(idx) + 1))

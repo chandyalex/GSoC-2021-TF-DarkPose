@@ -299,8 +299,6 @@ class COCODataset(JointsDataset):
   def evaluate(self, cfg, preds, output_dir, all_boxes, img_path,
                 *args, **kwargs):
     rank = cfg.RANK
-
-
     res_folder = os.path.join(output_dir, 'results')
     if not os.path.exists(res_folder):
       try:
@@ -316,6 +314,7 @@ class COCODataset(JointsDataset):
     # person x (keypoints)
     _kpts = []
     for idx, kpt in enumerate(preds):
+  
 
       _kpts.append({
           'keypoints': kpt,

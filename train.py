@@ -16,7 +16,7 @@ import tensorflow as tf
 
 import models
 from data import coco
-from data import coco_data
+
 from core.loss import JointsMSELoss, JointsOHKMMSELoss, dice_loss
 from models import pose_resnet
 from core.evaluation import accuracy
